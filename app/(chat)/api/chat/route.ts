@@ -1,4 +1,5 @@
-import { geolocation, ipAddress } from "@vercel/functions";
+import { createOpenAI } from "@ai-sdk/openai";
+import { geolocation } from "@vercel/functions";
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -19,7 +20,6 @@ import {
   getCapabilities,
 } from "@/lib/ai/models";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
-import { getLanguageModel } from "@/lib/ai/providers";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { editDocument } from "@/lib/ai/tools/edit-document";
 import { getWeather } from "@/lib/ai/tools/get-weather";
@@ -39,7 +39,7 @@ import {
 } from "@/lib/db/queries";
 import type { DBMessage } from "@/lib/db/schema";
 import { ChatbotError } from "@/lib/errors";
-import { checkIpRateLimit } from "@/lib/ratelimit";
+// import { checkIpRateLimit } from "@/lib/ratelimit";
 import type { ChatMessage } from "@/lib/types";
 import { convertToUIMessages, generateUUID } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       ? selectedChatModel
       : DEFAULT_CHAT_MODEL;
 
-    await checkIpRateLimit(ipAddress(request));
+    // await checkIpRateLimit(ipAddress(request));
 
     const userType: UserType = session.user.type;
 
@@ -188,11 +188,18 @@ export async function POST(request: Request) {
 
     const modelMessages = await convertToModelMessages(uiMessages);
 
+    const litellm = createOpenAI({
+      // Your LiteLLM proxy URL (e.g., http://localhost:4000)
+      baseURL: "https://xcaliber-litellm.xcaliberhealth.io/v1",
+      // Your LiteLLM master key or virtual key
+      apiKey: "sk-P8L4ca6XT8Hs4XOkj6drbA",
+    });
+
     const stream = createUIMessageStream({
       originalMessages: isToolApprovalFlow ? uiMessages : undefined,
       execute: async ({ writer: dataStream }) => {
         const result = streamText({
-          model: getLanguageModel(chatModel),
+          model: litellm.chat(chatModel),
           system: systemPrompt({ requestHints, supportsTools }),
           messages: modelMessages,
           stopWhen: stepCountIs(5),
@@ -244,9 +251,13 @@ export async function POST(request: Request) {
         );
 
         if (titlePromise) {
-          const title = await titlePromise;
-          dataStream.write({ type: "data-chat-title", data: title });
-          updateChatTitleById({ chatId: id, title });
+          try {
+            const title = await titlePromise;
+            dataStream.write({ type: "data-chat-title", data: title });
+            updateChatTitleById({ chatId: id, title });
+          } catch {
+            /* title generation is non-critical */
+          }
         }
       },
       generateId: generateUUID,
