@@ -1,6 +1,7 @@
 "use client";
 
 import { PanelLeftIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
@@ -50,19 +51,24 @@ function PureChatHeader({
         />
       )}
 
-      <Button
-        asChild
-        className="hidden rounded-lg bg-foreground px-4 text-background hover:bg-foreground/90 md:ml-auto md:flex"
-      >
-        <Link
+      <div className="hidden rounded-lg px-4 md:ml-auto md:flex">
+        {/* <Link
           href="https://vercel.com/templates/next.js/chatbot"
           rel="noopener noreferrer"
           target="_blank"
         >
           <VercelIcon size={16} />
           Deploy with Vercel
-        </Link>
-      </Button>
+        </Link> */}
+        <Image
+          alt="Logo"
+          className="h-8 w-auto"
+          height={32}
+          src="/logo.png"
+          unoptimized
+          width={82}
+        />
+      </div>
     </header>
   );
 }
