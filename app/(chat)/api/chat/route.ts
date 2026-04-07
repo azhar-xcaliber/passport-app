@@ -22,6 +22,7 @@ import {
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { editDocument } from "@/lib/ai/tools/edit-document";
+import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { updateDocument } from "@/lib/ai/tools/update-document";
@@ -208,6 +209,7 @@ export async function POST(request: Request) {
               ? []
               : [
                   "getWeather",
+                  "getPatientAppointments",
                   "createDocument",
                   "editDocument",
                   "updateDocument",
@@ -223,6 +225,7 @@ export async function POST(request: Request) {
           },
           tools: {
             getWeather,
+            getPatientAppointments,
             createDocument: createDocument({
               session,
               dataStream,

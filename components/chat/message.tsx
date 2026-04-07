@@ -19,6 +19,7 @@ import { SparklesIcon } from "./icons";
 import { MessageActions } from "./message-actions";
 import { MessageReasoning } from "./message-reasoning";
 import { PreviewAttachment } from "./preview-attachment";
+import { PatientAppointmentScheduler } from "./patient-appointment-scheduler";
 import { Weather } from "./weather";
 
 const PurePreviewMessage = ({
@@ -212,6 +213,30 @@ const PurePreviewMessage = ({
                   </button>
                 </div>
               )}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getPatientAppointments") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,580px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <PatientAppointmentScheduler data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getPatientAppointments" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
             </ToolContent>
           </Tool>
         </div>
