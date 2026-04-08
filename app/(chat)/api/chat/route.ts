@@ -184,12 +184,40 @@ export async function POST(request: Request) {
     }
 
     const modelConfig = chatModels.find((m) => m.id === chatModel);
-    const modelCapabilities = await getCapabilities();
+    const modelCapabilities = getCapabilities();
     const capabilities = modelCapabilities[chatModel];
     const isReasoningModel = capabilities?.reasoning === true;
     const supportsTools = capabilities?.tools === true;
 
-    const modelMessages = await convertToModelMessages(uiMessages);
+    const rawModelMessages = await convertToModelMessages(uiMessages);
+
+    // Decode data: URL file parts to Uint8Array so the AI SDK doesn't try
+    // to download them (downloadAssets only accepts http/https URLs).
+    const modelMessages = rawModelMessages.map((msg) => {
+      if (msg.role !== "user" || !Array.isArray(msg.content)) { return msg; }
+      return {
+        ...msg,
+        content: msg.content.map((part) => {
+          if (
+            part.type === "file" &&
+            typeof (part as { data?: unknown }).data === "string"
+          ) {
+            const dataUrl = (part as { data: string }).data;
+            if (dataUrl.startsWith("data:")) {
+              const commaIdx = dataUrl.indexOf(",");
+              const base64 = dataUrl.slice(commaIdx + 1);
+              const binary = atob(base64);
+              const bytes = new Uint8Array(binary.length);
+              for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+              }
+              return { ...part, data: bytes };
+            }
+          }
+          return part;
+        }),
+      };
+    });
 
     const litellm = createOpenAI({
       // Your LiteLLM proxy URL (e.g., http://localhost:4000)

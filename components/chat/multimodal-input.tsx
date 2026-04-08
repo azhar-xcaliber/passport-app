@@ -258,35 +258,27 @@ function PureMultimodalInput({
     chatId,
   ]);
 
-  const uploadFile = useCallback(async (file: File) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/files/upload`,
-        {
-          method: "POST",
-          body: formData,
+  const uploadFile = useCallback(
+    (file: File) =>
+      new Promise<{ url: string; name: string; contentType: string } | undefined>(
+        (resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            resolve({
+              url: reader.result as string,
+              name: file.name,
+              contentType: file.type,
+            });
+          };
+          reader.onerror = () => {
+            toast.error("Failed to read file, please try again!");
+            resolve(undefined);
+          };
+          reader.readAsDataURL(file);
         }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        const { url, pathname, contentType } = data;
-
-        return {
-          url,
-          name: pathname,
-          contentType,
-        };
-      }
-      const { error } = await response.json();
-      toast.error(error);
-    } catch (_error) {
-      toast.error("Failed to upload file, please try again!");
-    }
-  }, []);
+      ),
+    []
+  );
 
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {

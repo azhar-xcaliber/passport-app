@@ -34,47 +34,17 @@ export const chatModels: ChatModel[] = [
   },
 ];
 
-export async function getCapabilities(): Promise<
-  Record<string, ModelCapabilities>
-> {
-  const results = await Promise.all(
-    chatModels.map(async (model) => {
-      try {
-        const res = await fetch(
-          `https://ai-gateway.vercel.sh/v1/models/${model.id}/endpoints`,
-          { next: { revalidate: 86_400 } }
-        );
-        if (!res.ok) {
-          return [model.id, { tools: false, vision: false, reasoning: false }];
-        }
+const hardcodedCapabilities: Record<string, ModelCapabilities> = {
+  "openai/gpt-4o": { tools: true, vision: true, reasoning: false },
+};
 
-        const json = await res.json();
-        const endpoints = json.data?.endpoints ?? [];
-        const params = new Set(
-          endpoints.flatMap(
-            (e: { supported_parameters?: string[] }) =>
-              e.supported_parameters ?? []
-          )
-        );
-        const inputModalities = new Set(
-          json.data?.architecture?.input_modalities ?? []
-        );
-
-        return [
-          model.id,
-          {
-            tools: params.has("tools"),
-            vision: inputModalities.has("image"),
-            reasoning: params.has("reasoning"),
-          },
-        ];
-      } catch {
-        return [model.id, { tools: false, vision: false, reasoning: false }];
-      }
-    })
+export function getCapabilities(): Record<string, ModelCapabilities> {
+  return Object.fromEntries(
+    chatModels.map((model) => [
+      model.id,
+      hardcodedCapabilities[model.id] ?? { tools: true, vision: false, reasoning: false },
+    ])
   );
-
-  return Object.fromEntries(results);
 }
 
 export const isDemo = process.env.IS_DEMO === "1";
