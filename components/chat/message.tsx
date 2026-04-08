@@ -19,7 +19,9 @@ import { SparklesIcon } from "./icons";
 import { MessageActions } from "./message-actions";
 import { MessageReasoning } from "./message-reasoning";
 import { PreviewAttachment } from "./preview-attachment";
-import { PatientAppointmentScheduler } from "./patient-appointment-scheduler";
+import { AppointmentConfirmation } from "./appointment-confirmation";
+import { AvailableTimeSlots } from "./available-time-slots";
+import { UpcomingAppointments } from "./upcoming-appointments";
 import { Weather } from "./weather";
 
 const PurePreviewMessage = ({
@@ -221,12 +223,12 @@ const PurePreviewMessage = ({
 
     if (type === "tool-getPatientAppointments") {
       const { toolCallId, state } = part;
-      const widthClass = "w-[min(100%,580px)]";
+      const widthClass = "w-[min(100%,520px)]";
 
       if (state === "output-available") {
         return (
           <div className={widthClass} key={toolCallId}>
-            <PatientAppointmentScheduler data={part.output} />
+            <UpcomingAppointments data={part.output} />
           </div>
         );
       }
@@ -235,6 +237,54 @@ const PurePreviewMessage = ({
         <div className={widthClass} key={toolCallId}>
           <Tool className="w-full" defaultOpen={true}>
             <ToolHeader state={state} type="tool-getPatientAppointments" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getAvailableSlots") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,440px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <AvailableTimeSlots data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getAvailableSlots" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-bookAppointment") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,420px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <AppointmentConfirmation data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-bookAppointment" />
             <ToolContent>
               {state === "input-available" && <ToolInput input={part.input} />}
             </ToolContent>

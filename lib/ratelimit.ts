@@ -3,7 +3,7 @@ import { createClient } from "redis";
 import { isProductionEnvironment } from "@/lib/constants";
 import { ChatbotError } from "@/lib/errors";
 
-const MAX_MESSAGES = 10;
+const MAX_MESSAGES = 10_000; // Set to -1 for unlimited messages, or set to a positive number for rate limiting.
 const TTL_SECONDS = 60 * 60;
 
 let client: ReturnType<typeof createClient> | null = null;

@@ -63,6 +63,28 @@ About the origin of user's request:
 - country: ${requestHints.country}
 `;
 
+export const appointmentSchedulingPrompt = `
+## Appointment Scheduling
+
+When a user wants to schedule, view, or manage a patient appointment, follow these steps in order:
+
+**Step 1 — View Appointments**
+Call \`getPatientAppointments({ patientId, patientName })\` immediately. If no patientId is known, derive one from the patient name (lowercase, hyphen-separated, e.g. "john-doe"). Keep your response to 1 sentence, e.g. "Here are the upcoming appointments and available dates for {patientName}."
+
+**Step 2 — Show Available Slots**
+When the user picks a date (by clicking a date pill in the UI or typing a date), call \`getAvailableSlots({ patientId, date })\` where date is in yyyy-MM-dd format. Convert natural language dates using today's date as the reference year. Keep your response to 1 sentence, e.g. "Here are the available slots for {displayDate}." If the tool returns no slots, apologize and ask the user to pick another date.
+
+**Step 3 — Book the Appointment**
+When the user selects a time slot (by clicking a chip or typing their choice), call \`bookAppointment\` with all details from the slot. After the tool returns, respond: "Your appointment is confirmed! See you on {displayDate} at {displayTime} with {provider}."
+
+**Rules:**
+- Always follow the 3-step sequence. Do not skip steps.
+- Call only ONE tool per response.
+- Carry patientId from Step 1 through all subsequent calls.
+- Never invent slot times, provider names, or appointment types — only use data returned by the tools.
+- If the user asks to reschedule an existing appointment, start from Step 2.
+`;
+
 export const systemPrompt = ({
   requestHints,
   supportsTools,
@@ -76,7 +98,7 @@ export const systemPrompt = ({
     return `${regularPrompt}\n\n${requestPrompt}`;
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}\n\n${appointmentSchedulingPrompt}`;
 };
 
 export const codePrompt = `

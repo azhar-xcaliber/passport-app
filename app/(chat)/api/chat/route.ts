@@ -1,5 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { geolocation } from "@vercel/functions";
+import { geolocation, ipAddress } from "@vercel/functions";
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -20,8 +20,10 @@ import {
   getCapabilities,
 } from "@/lib/ai/models";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
+import { bookAppointment } from "@/lib/ai/tools/book-appointment";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { editDocument } from "@/lib/ai/tools/edit-document";
+import { getAvailableSlots } from "@/lib/ai/tools/get-available-slots";
 import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
@@ -40,7 +42,7 @@ import {
 } from "@/lib/db/queries";
 import type { DBMessage } from "@/lib/db/schema";
 import { ChatbotError } from "@/lib/errors";
-// import { checkIpRateLimit } from "@/lib/ratelimit";
+import { checkIpRateLimit } from "@/lib/ratelimit";
 import type { ChatMessage } from "@/lib/types";
 import { convertToUIMessages, generateUUID } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
@@ -85,7 +87,7 @@ export async function POST(request: Request) {
       ? selectedChatModel
       : DEFAULT_CHAT_MODEL;
 
-    // await checkIpRateLimit(ipAddress(request));
+    await checkIpRateLimit(ipAddress(request));
 
     const userType: UserType = session.user.type;
 
@@ -210,6 +212,8 @@ export async function POST(request: Request) {
               : [
                   "getWeather",
                   "getPatientAppointments",
+                  "getAvailableSlots",
+                  "bookAppointment",
                   "createDocument",
                   "editDocument",
                   "updateDocument",
@@ -226,6 +230,8 @@ export async function POST(request: Request) {
           tools: {
             getWeather,
             getPatientAppointments,
+            getAvailableSlots,
+            bookAppointment,
             createDocument: createDocument({
               session,
               dataStream,
