@@ -33,7 +33,7 @@ export function AvailableTimeSlots({
       parts: [
         {
           type: "text",
-          text: `I'll take the ${slot.displayTime} slot with ${slot.provider} for a ${slot.type}`,
+          text: `I'll take the ${slot.displayTime} slot with ${slot.provider}`,
         },
       ],
     });

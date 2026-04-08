@@ -27,6 +27,7 @@ import { getAvailableSlots } from "@/lib/ai/tools/get-available-slots";
 import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
+import { selectAppointmentType } from "@/lib/ai/tools/select-appointment-type";
 import { updateDocument } from "@/lib/ai/tools/update-document";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
@@ -194,7 +195,9 @@ export async function POST(request: Request) {
     // Decode data: URL file parts to Uint8Array so the AI SDK doesn't try
     // to download them (downloadAssets only accepts http/https URLs).
     const modelMessages = rawModelMessages.map((msg) => {
-      if (msg.role !== "user" || !Array.isArray(msg.content)) { return msg; }
+      if (msg.role !== "user" || !Array.isArray(msg.content)) {
+        return msg;
+      }
       return {
         ...msg,
         content: msg.content.map((part) => {
@@ -241,6 +244,7 @@ export async function POST(request: Request) {
                   "getWeather",
                   "getPatientAppointments",
                   "getAvailableSlots",
+                  "selectAppointmentType",
                   "bookAppointment",
                   "createDocument",
                   "editDocument",
@@ -259,6 +263,7 @@ export async function POST(request: Request) {
             getWeather,
             getPatientAppointments,
             getAvailableSlots,
+            selectAppointmentType,
             bookAppointment,
             createDocument: createDocument({
               session,
