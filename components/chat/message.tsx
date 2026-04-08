@@ -22,6 +22,8 @@ import { PreviewAttachment } from "./preview-attachment";
 import { AppointmentConfirmation } from "./appointment-confirmation";
 import { AppointmentTypeSelector } from "./appointment-type-selector";
 import { AvailableTimeSlots } from "./available-time-slots";
+import { RefillConfirmation } from "./refill-confirmation";
+import { RefillRequestDetails } from "./refill-request-details";
 import { UpcomingAppointments } from "./upcoming-appointments";
 import { Weather } from "./weather";
 
@@ -310,6 +312,54 @@ const PurePreviewMessage = ({
         <div className={widthClass} key={toolCallId}>
           <Tool className="w-full" defaultOpen={true}>
             <ToolHeader state={state} type="tool-bookAppointment" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-processRefillRequest") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,480px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <RefillRequestDetails data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-processRefillRequest" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-submitRefillRequest") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,420px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <RefillConfirmation data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-submitRefillRequest" />
             <ToolContent>
               {state === "input-available" && <ToolInput input={part.input} />}
             </ToolContent>

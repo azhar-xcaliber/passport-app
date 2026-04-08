@@ -1,8 +1,8 @@
-export const DEFAULT_CHAT_MODEL = "openai/gpt-4o";
+export const DEFAULT_CHAT_MODEL = "gpt-5.4-mini";
 
 export const titleModel = {
-  id: "openai/gpt-4o",
-  name: "GPT-4o",
+  id: "gpt-5.4-mini",
+  name: "XC Agent",
   provider: "openai",
   description: "Fast model for title generation",
   gatewayOrder: ["openai"],
@@ -25,8 +25,8 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "openai/gpt-4o",
-    name: "GPT-4o",
+    id: "gpt-5.4-mini",
+    name: "XC Agent",
     provider: "openai",
     description: "OpenAI's most advanced model with vision and tool use",
     gatewayOrder: ["openai"],
@@ -35,14 +35,18 @@ export const chatModels: ChatModel[] = [
 ];
 
 const hardcodedCapabilities: Record<string, ModelCapabilities> = {
-  "openai/gpt-4o": { tools: true, vision: true, reasoning: false },
+  "gpt-5.4-mini": { tools: true, vision: true, reasoning: false },
 };
 
 export function getCapabilities(): Record<string, ModelCapabilities> {
   return Object.fromEntries(
     chatModels.map((model) => [
       model.id,
-      hardcodedCapabilities[model.id] ?? { tools: true, vision: false, reasoning: false },
+      hardcodedCapabilities[model.id] ?? {
+        tools: true,
+        vision: false,
+        reasoning: false,
+      },
     ])
   );
 }

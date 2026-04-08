@@ -8,6 +8,8 @@ import type { getPatientAppointments } from "./ai/tools/get-patient-appointments
 import type { getWeather } from "./ai/tools/get-weather";
 import type { requestSuggestions } from "./ai/tools/request-suggestions";
 import type { selectAppointmentType } from "./ai/tools/select-appointment-type";
+import type { processRefillRequest } from "./ai/tools/process-refill-request";
+import type { submitRefillRequest } from "./ai/tools/submit-refill-request";
 import type { updateDocument } from "./ai/tools/update-document";
 import type { Suggestion } from "./db/schema";
 
@@ -22,6 +24,8 @@ type patientAppointmentsTool = InferUITool<typeof getPatientAppointments>;
 type getAvailableSlotsTool = InferUITool<typeof getAvailableSlots>;
 type selectAppointmentTypeTool = InferUITool<typeof selectAppointmentType>;
 type bookAppointmentTool = InferUITool<typeof bookAppointment>;
+type processRefillRequestTool = InferUITool<typeof processRefillRequest>;
+type submitRefillRequestTool = InferUITool<typeof submitRefillRequest>;
 type createDocumentTool = InferUITool<ReturnType<typeof createDocument>>;
 type updateDocumentTool = InferUITool<ReturnType<typeof updateDocument>>;
 type requestSuggestionsTool = InferUITool<
@@ -34,6 +38,8 @@ export type ChatTools = {
   getAvailableSlots: getAvailableSlotsTool;
   selectAppointmentType: selectAppointmentTypeTool;
   bookAppointment: bookAppointmentTool;
+  processRefillRequest: processRefillRequestTool;
+  submitRefillRequest: submitRefillRequestTool;
   createDocument: createDocumentTool;
   updateDocument: updateDocumentTool;
   requestSuggestions: requestSuggestionsTool;

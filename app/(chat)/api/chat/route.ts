@@ -27,7 +27,9 @@ import { getAvailableSlots } from "@/lib/ai/tools/get-available-slots";
 import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
+import { processRefillRequest } from "@/lib/ai/tools/process-refill-request";
 import { selectAppointmentType } from "@/lib/ai/tools/select-appointment-type";
+import { submitRefillRequest } from "@/lib/ai/tools/submit-refill-request";
 import { updateDocument } from "@/lib/ai/tools/update-document";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
@@ -224,9 +226,10 @@ export async function POST(request: Request) {
 
     const litellm = createOpenAI({
       // Your LiteLLM proxy URL (e.g., http://localhost:4000)
-      baseURL: "https://xcaliber-litellm.xcaliberhealth.io/v1",
+      baseURL: "https://api.openai.com/v1",
       // Your LiteLLM master key or virtual key
-      apiKey: "sk-P8L4ca6XT8Hs4XOkj6drbA",
+      apiKey:
+        "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",
     });
 
     const stream = createUIMessageStream({
@@ -246,6 +249,8 @@ export async function POST(request: Request) {
                   "getAvailableSlots",
                   "selectAppointmentType",
                   "bookAppointment",
+                  "processRefillRequest",
+                  "submitRefillRequest",
                   "createDocument",
                   "editDocument",
                   "updateDocument",
@@ -265,6 +270,8 @@ export async function POST(request: Request) {
             getAvailableSlots,
             selectAppointmentType,
             bookAppointment,
+            processRefillRequest,
+            submitRefillRequest,
             createDocument: createDocument({
               session,
               dataStream,

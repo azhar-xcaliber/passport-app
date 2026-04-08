@@ -91,6 +91,35 @@ When the user selects a time slot (by clicking a chip or typing their choice), c
 - If the user asks to reschedule an existing appointment, start from Step 2.
 `;
 
+export const medicationRefillPrompt = `
+## Medication Refill Requests
+
+When a user uploads an image of medication (bottle, prescription label, pill box) and asks for a refill, follow these steps:
+
+**Step 1 — Process the Image & Extract Details**
+Analyze the uploaded image using your vision capability. Extract as many details as possible: medication name, dosage/strength, Rx number, prescribing doctor, pharmacy name, and approximate doses remaining (if visible). Then call \`processRefillRequest\` with all extracted fields. Set any unreadable fields to null and list them in the missingFields array. Always include "urgency" in missingFields since it cannot be determined from an image. Keep your response to 1 sentence, e.g. "I've extracted the details from your medication label. Let me know about the missing information."
+
+**Step 2 — Gather Missing Information**
+After processRefillRequest returns, the UI will show the extracted details and prompt the user for missing fields. Continue the conversation to gather any missing required information:
+- medicationName: Required. Ask the user to type or spell it out.
+- dosage: Required if the medication comes in multiple strengths. Ask the user.
+- pharmacy: Required. If not on the label, ask where they'd like the refill sent.
+- urgency: Always required. The user will select from: "Routine — plenty left", "Running low soon", or "Urgent — almost out". Map these to enum values: "routine", "soon", or "urgent".
+- dosesRemaining: Optional but helpful for urgency assessment.
+
+IMPORTANT: Messages like "My urgency level is: ..." or "I'd like to provide my ..." mean the user is responding to the processRefillRequest UI. Do NOT call processRefillRequest again. Continue gathering any remaining missing fields or proceed to Step 3.
+
+**Step 3 — Submit the Refill Request**
+Once all required fields are gathered (medicationName, dosage, pharmacy, urgency), call \`submitRefillRequest\` with the complete information. After the tool returns, respond: "Your refill request has been submitted! Request ID: {requestId}. Estimated ready: {estimatedReady}."
+
+**Rules:**
+- Always follow the step sequence in order. Do not skip steps.
+- Call only ONE tool per response.
+- If no image is uploaded but the user asks for a refill, skip Step 1 and ask them to provide medication details verbally, then proceed to Step 3 once all info is gathered.
+- Carry patientId and all extracted fields across all steps.
+- Never invent medication names, dosages, or Rx numbers — only use data from the image or user input.
+`;
+
 export const systemPrompt = ({
   requestHints,
   supportsTools,
@@ -104,7 +133,7 @@ export const systemPrompt = ({
     return `${regularPrompt}\n\n${requestPrompt}`;
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}\n\n${appointmentSchedulingPrompt}`;
+  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}\n\n${appointmentSchedulingPrompt}\n\n${medicationRefillPrompt}`;
 };
 
 export const codePrompt = `
