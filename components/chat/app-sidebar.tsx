@@ -1,10 +1,17 @@
 "use client";
 
 import {
+  CalendarPlusIcon,
+  ClipboardListIcon,
+  CreditCardIcon,
+  HandCoinsIcon,
   MessageSquareIcon,
   PanelLeftIcon,
   PenSquareIcon,
+  PillIcon,
+  ShieldIcon,
   TrashIcon,
+  UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -49,15 +56,25 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 const NAV_SECTIONS = [
   {
     title: "Find Care",
-    items: ["Schedule an Appointment", "View Care Team"],
+    items: [
+      { label: "Schedule an Appointment", icon: CalendarPlusIcon },
+      { label: "View Care Team", icon: UsersIcon },
+    ],
   },
   {
     title: "My Record",
-    items: ["View Visits", "Immunizations", "Request Refills"],
+    items: [
+      { label: "View Visits", icon: ClipboardListIcon },
+      { label: "Immunizations", icon: ShieldIcon },
+      { label: "Request Refills", icon: PillIcon },
+    ],
   },
   {
     title: "Billing",
-    items: ["View and Pay Bill", "Financial Assistance"],
+    items: [
+      { label: "View and Pay Bill", icon: CreditCardIcon },
+      { label: "Financial Assistance", icon: HandCoinsIcon },
+    ],
   },
 ];
 
@@ -128,23 +145,24 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {section.items.map((item) => (
-                      <SidebarMenuItem key={item}>
+                      <SidebarMenuItem key={item.label}>
                         <SidebarMenuButton
                           className={`rounded-md text-[12px] transition-colors duration-150 hover:bg-sidebar-accent/50 ${
-                            selectedContext?.label === item
+                            selectedContext?.label === item.label
                               ? "bg-sidebar-accent text-sidebar-foreground font-medium"
                               : "text-sidebar-foreground/70"
                           }`}
                           onClick={() => {
                             setSelectedContext(
-                              selectedContext?.label === item
+                              selectedContext?.label === item.label
                                 ? null
-                                : { label: item, section: section.title }
+                                : { label: item.label, section: section.title }
                             );
                             setOpenMobile(false);
                           }}
                         >
-                          {item}
+                          <item.icon className="size-4" />
+                          {item.label}
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}

@@ -21,7 +21,7 @@ export const suggestions = [
 
 export const contextSuggestions: Record<string, string[]> = {
   "Schedule an Appointment": [
-    "I need to schedule an appointment with my primary care doctor",
+    "I need to schedule an appointment",
     "What specialists are available for a referral?",
     "Do you have any openings this week?",
     "I need to reschedule my upcoming appointment",
@@ -47,7 +47,7 @@ export const contextSuggestions: Record<string, string[]> = {
   "Request Refills": [
     "I need to refill my blood pressure medication",
     "Which of my prescriptions are ready for refill?",
-    "How do I request a new prescription?",
+    "Help me request a refill for my medication",
     "Can I get a 90-day supply of my medication?",
   ],
   "View and Pay Bill": [
