@@ -2,8 +2,9 @@
 
 import type { UseChatHelpers } from "@ai-sdk/react";
 import { motion } from "framer-motion";
-import { memo } from "react";
-import { suggestions } from "@/lib/constants";
+import { memo, useMemo } from "react";
+import { useChatContext } from "@/hooks/use-chat-context";
+import { contextSuggestions } from "@/lib/constants";
 import type { ChatMessage } from "@/lib/types";
 import { Suggestion } from "../ai-elements/suggestion";
 import type { VisibilityType } from "./visibility-selector";
@@ -15,7 +16,18 @@ type SuggestedActionsProps = {
 };
 
 function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
-  const suggestedActions = suggestions;
+  const { selectedContext } = useChatContext();
+
+  const defaultSuggestions = useMemo(() => {
+    const all = Object.values(contextSuggestions).flat();
+    const shuffled = [...all].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 4);
+  }, []);
+
+  const suggestedActions =
+    selectedContext && contextSuggestions[selectedContext.label]
+      ? contextSuggestions[selectedContext.label]
+      : defaultSuggestions;
 
   return (
     <div
