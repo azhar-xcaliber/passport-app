@@ -36,6 +36,7 @@ import {
   ModelSelectorName,
   ModelSelectorTrigger,
 } from "@/components/ai-elements/model-selector";
+import { useChatContext } from "@/hooks/use-chat-context";
 import {
   type ChatModel,
   chatModels,
@@ -109,6 +110,7 @@ function PureMultimodalInput({
 }) {
   const router = useRouter();
   const { setTheme, resolvedTheme } = useTheme();
+  const { selectedContext, setSelectedContext } = useChatContext();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
   const hasAutoFocused = useRef(false);
@@ -514,6 +516,19 @@ function PureMultimodalInput({
               onModelChange={onModelChange}
               selectedModelId={selectedModelId}
             />
+            {selectedContext && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                {selectedContext.label}
+                <button
+                  aria-label="Clear context"
+                  className="ml-0.5 p-1 opacity-60 hover:opacity-100 transition-opacity"
+                  onClick={() => setSelectedContext(null)}
+                  type="button"
+                >
+                  ×
+                </button>
+              </span>
+            )}
           </PromptInputTools>
 
           {status === "submitted" ? (

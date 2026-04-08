@@ -24,6 +24,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -32,6 +33,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useChatContext } from "@/hooks/use-chat-context";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,11 +46,27 @@ import {
 } from "../ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
+const NAV_SECTIONS = [
+  {
+    title: "Find Care",
+    items: ["Schedule an Appointment", "View Care Team"],
+  },
+  {
+    title: "My Record",
+    items: ["View Visits", "Immunizations", "Request Refills"],
+  },
+  {
+    title: "Billing",
+    items: ["View and Pay Bill", "Financial Assistance"],
+  },
+];
+
 export function AppSidebar({ user }: { user: User | undefined }) {
   const router = useRouter();
   const { setOpenMobile, toggleSidebar } = useSidebar();
   const { mutate } = useSWRConfig();
   const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
+  const { selectedContext, setSelectedContext } = useChatContext();
 
   const handleDeleteAll = () => {
     setShowDeleteAllDialog(false);
@@ -101,6 +119,40 @@ export function AppSidebar({ user }: { user: User | undefined }) {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
+          <div className="group-data-[collapsible=icon]:hidden">
+            {NAV_SECTIONS.map((section) => (
+              <SidebarGroup key={section.title} className="py-1">
+                <SidebarGroupLabel className="px-2 text-[10px] font-semibold uppercase tracking-wider text-sidebar-foreground/40">
+                  {section.title}
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {section.items.map((item) => (
+                      <SidebarMenuItem key={item}>
+                        <SidebarMenuButton
+                          className={`rounded-md text-[12px] transition-colors duration-150 hover:bg-sidebar-accent/50 ${
+                            selectedContext?.label === item
+                              ? "bg-sidebar-accent text-sidebar-foreground font-medium"
+                              : "text-sidebar-foreground/70"
+                          }`}
+                          onClick={() => {
+                            setSelectedContext(
+                              selectedContext?.label === item
+                                ? null
+                                : { label: item, section: section.title }
+                            );
+                            setOpenMobile(false);
+                          }}
+                        >
+                          {item}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ))}
+          </div>
           <SidebarGroup className="pt-1">
             <SidebarGroupContent>
               <SidebarMenu>
