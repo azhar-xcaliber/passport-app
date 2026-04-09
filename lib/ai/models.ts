@@ -1,7 +1,7 @@
-export const DEFAULT_CHAT_MODEL = "gpt-5.4-mini";
+export const DEFAULT_CHAT_MODEL = "us.anthropic.claude-sonnet-4-20250514-v1:0";
 
 export const titleModel = {
-  id: "gpt-5.4-mini",
+  id: "us.anthropic.claude-sonnet-4-20250514-v1:0",
   name: "XC Agent",
   provider: "openai",
   description: "Fast model for title generation",
@@ -25,7 +25,7 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "gpt-5.4-mini",
+    id: "us.anthropic.claude-sonnet-4-20250514-v1:0",
     name: "XC Agent",
     provider: "openai",
     description: "OpenAI's most advanced model with vision and tool use",
@@ -35,7 +35,11 @@ export const chatModels: ChatModel[] = [
 ];
 
 const hardcodedCapabilities: Record<string, ModelCapabilities> = {
-  "gpt-5.4-mini": { tools: true, vision: true, reasoning: false },
+  "us.anthropic.claude-sonnet-4-20250514-v1:0": {
+    tools: true,
+    vision: true,
+    reasoning: false,
+  },
 };
 
 export function getCapabilities(): Record<string, ModelCapabilities> {
