@@ -26,8 +26,8 @@ import { editDocument } from "@/lib/ai/tools/edit-document";
 import { getAvailableSlots } from "@/lib/ai/tools/get-available-slots";
 import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments";
 import { getWeather } from "@/lib/ai/tools/get-weather";
-import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { processRefillRequest } from "@/lib/ai/tools/process-refill-request";
+import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { selectAppointmentType } from "@/lib/ai/tools/select-appointment-type";
 import { submitRefillRequest } from "@/lib/ai/tools/submit-refill-request";
 import { updateDocument } from "@/lib/ai/tools/update-document";
@@ -226,10 +226,9 @@ export async function POST(request: Request) {
 
     const litellm = createOpenAI({
       // Your LiteLLM proxy URL (e.g., http://localhost:4000)
-      baseURL: "https://api.openai.com/v1",
+      baseURL: process.env.XCALIBER_LITELLM_URL,
       // Your LiteLLM master key or virtual key
-      apiKey:
-        "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",
+      apiKey: process.env.XCALIBER_LITELLM_API_KEY,
     });
 
     const stream = createUIMessageStream({
