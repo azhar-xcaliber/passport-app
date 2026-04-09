@@ -1,7 +1,7 @@
-export const DEFAULT_CHAT_MODEL = "us.anthropic.claude-sonnet-4-20250514-v1:0";
+export const DEFAULT_CHAT_MODEL = "us.anthropic.claude-sonnet-4-6";
 
 export const titleModel = {
-  id: "us.anthropic.claude-sonnet-4-20250514-v1:0",
+  id: "us.anthropic.claude-sonnet-4-6",
   name: "XC Agent",
   provider: "openai",
   description: "Fast model for title generation",
@@ -25,7 +25,7 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "us.anthropic.claude-sonnet-4-20250514-v1:0",
+    id: "us.anthropic.claude-sonnet-4-6",
     name: "XC Agent",
     provider: "openai",
     description: "OpenAI's most advanced model with vision and tool use",
@@ -35,7 +35,7 @@ export const chatModels: ChatModel[] = [
 ];
 
 const hardcodedCapabilities: Record<string, ModelCapabilities> = {
-  "us.anthropic.claude-sonnet-4-20250514-v1:0": {
+  "us.anthropic.claude-sonnet-4-6": {
     tools: true,
     vision: true,
     reasoning: false,
