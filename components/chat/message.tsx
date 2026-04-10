@@ -12,27 +12,28 @@ import {
   ToolInput,
   ToolOutput,
 } from "../ai-elements/tool";
-import { useDataStream } from "./data-stream-provider";
-import { DocumentToolResult } from "./document";
-import { DocumentPreview } from "./document-preview";
-import { SparklesIcon } from "./icons";
-import { MessageActions } from "./message-actions";
-import { MessageReasoning } from "./message-reasoning";
-import { PreviewAttachment } from "./preview-attachment";
 import { AppointmentConfirmation } from "./appointment-confirmation";
 import { AppointmentSummary } from "./appointment-summary";
 import { AppointmentTypeSelector } from "./appointment-type-selector";
 import { AvailableTimeSlots } from "./available-time-slots";
 import { ClinicLocationSelector } from "./clinic-location-selector";
+import { useDataStream } from "./data-stream-provider";
 import { DoctorSelector } from "./doctor-selector";
+import { DocumentToolResult } from "./document";
+import { DocumentPreview } from "./document-preview";
+import { SparklesIcon } from "./icons";
 import { InsuranceInfo } from "./insurance-info";
+import { MessageActions } from "./message-actions";
+import { MessageReasoning } from "./message-reasoning";
 import { PatientHistory } from "./patient-history";
 import { PatientMedicationList } from "./patient-medication-list";
 import { PatientVerificationResult } from "./patient-verification-result";
 import { PharmacySelector } from "./pharmacy-selector";
+import { PreviewAttachment } from "./preview-attachment";
 import { RefillConfirmation } from "./refill-confirmation";
 import { RefillRequestDetails } from "./refill-request-details";
 import { UpcomingAppointments } from "./upcoming-appointments";
+import { VisitReasonSelector } from "./visit-reason-selector";
 import { Weather } from "./weather";
 
 const PurePreviewMessage = ({
@@ -484,6 +485,40 @@ const PurePreviewMessage = ({
         <div className={widthClass} key={toolCallId}>
           <Tool className="w-full" defaultOpen={true}>
             <ToolHeader state={state} type="tool-getDoctorsAtLocation" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getVisitReasons") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,480px)]";
+
+      if (state === "output-available") {
+        if (part.output && "error" in part.output) {
+          return (
+            <div
+              className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
+              key={toolCallId}
+            >
+              Error loading visit reasons: {String(part.output.error)}
+            </div>
+          );
+        }
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <VisitReasonSelector data={part.output as never} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getVisitReasons" />
             <ToolContent>
               {state === "input-available" && <ToolInput input={part.input} />}
             </ToolContent>

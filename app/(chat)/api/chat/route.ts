@@ -31,6 +31,7 @@ import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments"
 import { getPatientHistory } from "@/lib/ai/tools/get-patient-history";
 import { getPatientInsurance } from "@/lib/ai/tools/get-patient-insurance";
 import { getPatientMedications } from "@/lib/ai/tools/get-patient-medications";
+import { getVisitReasons } from "@/lib/ai/tools/get-visit-reasons";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { processRefillRequest } from "@/lib/ai/tools/process-refill-request";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
@@ -264,6 +265,7 @@ export async function POST(request: Request) {
                   "getPatientHistory",
                   "getClinicLocations",
                   "getDoctorsAtLocation",
+                  "getVisitReasons",
                   "getPatientInsurance",
                   "showAppointmentSummary",
                   "createDocument",
@@ -293,6 +295,7 @@ export async function POST(request: Request) {
             getPatientHistory,
             getClinicLocations,
             getDoctorsAtLocation,
+            getVisitReasons,
             getPatientInsurance,
             showAppointmentSummary,
             createDocument: createDocument({

@@ -12,8 +12,20 @@ export const showAppointmentSummary = tool({
     doctorId: z.string().describe("Selected doctor's unique identifier"),
     doctorName: z.string().describe("Selected doctor's full name"),
     doctorSpecialty: z.string().describe("Selected doctor's specialty"),
-    reasonForVisit: z.string().describe("Patient's stated reason for the visit"),
-    hasInsurance: z.boolean().describe("Whether insurance information is on file"),
+    reasonForVisit: z
+      .string()
+      .describe("Patient's stated reason for the visit"),
+    displayDate: z
+      .string()
+      .optional()
+      .describe("Human-readable appointment date, e.g. 'Monday, April 14'"),
+    displayTime: z
+      .string()
+      .optional()
+      .describe("Human-readable appointment time, e.g. '10:00 AM'"),
+    hasInsurance: z
+      .boolean()
+      .describe("Whether insurance information is on file"),
     insuranceProvider: z
       .string()
       .nullable()

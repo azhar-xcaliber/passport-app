@@ -2,6 +2,7 @@
 
 import {
   CalendarIcon,
+  ClockIcon,
   CreditCardIcon,
   MapPinIcon,
   PencilIcon,
@@ -19,6 +20,8 @@ type AppointmentSummaryData = {
   doctorName: string;
   doctorSpecialty: string;
   reasonForVisit: string;
+  displayDate?: string;
+  displayTime?: string;
   hasInsurance: boolean;
   insuranceProvider: string | null;
   insurancePlanId: string | null;
@@ -42,7 +45,9 @@ function SummaryRow({
         <div className="text-muted-foreground/60 text-[10px] uppercase tracking-wider">
           {label}
         </div>
-        <div className="truncate font-medium text-foreground text-xs">{value}</div>
+        <div className="truncate font-medium text-foreground text-xs">
+          {value}
+        </div>
       </div>
     </div>
   );
@@ -52,19 +57,24 @@ export function AppointmentSummary({ data }: { data: AppointmentSummaryData }) {
   const { sendMessage, isReadonly } = useActiveChat();
 
   const handleConfirm = () => {
-    if (isReadonly) return;
+    if (isReadonly) {
+      return;
+    }
     sendMessage({
       role: "user",
       parts: [{ type: "text", text: "I confirm this appointment" }],
     });
   };
 
-  const handleChange = (field: "location" | "doctor" | "reason") => {
-    if (isReadonly) return;
+  const handleChange = (field: "location" | "doctor" | "reason" | "time") => {
+    if (isReadonly) {
+      return;
+    }
     const messages = {
       location: "I'd like to change the location",
       doctor: "I'd like to change the doctor",
-      reason: "I'd like to change the reason for visit",
+      reason: "I'd like to change the visit reason",
+      time: "I'd like to change the time",
     };
     sendMessage({
       role: "user",
@@ -121,7 +131,9 @@ export function AppointmentSummary({ data }: { data: AppointmentSummaryData }) {
 
         <div className="flex items-center justify-between pr-3">
           <SummaryRow
-            icon={<StethoscopeIcon className="text-muted-foreground/60" size={12} />}
+            icon={
+              <StethoscopeIcon className="text-muted-foreground/60" size={12} />
+            }
             label="Doctor"
             value={`${data.doctorName} · ${data.doctorSpecialty}`}
           />
@@ -165,8 +177,39 @@ export function AppointmentSummary({ data }: { data: AppointmentSummaryData }) {
           </button>
         </div>
 
+        {(data.displayDate || data.displayTime) && (
+          <div className="flex items-center justify-between pr-3">
+            <SummaryRow
+              icon={
+                <ClockIcon className="text-muted-foreground/60" size={12} />
+              }
+              label="Date & Time"
+              value={[data.displayDate, data.displayTime]
+                .filter(Boolean)
+                .join(" at ")}
+            />
+            <button
+              aria-label="Change time"
+              className={[
+                "flex shrink-0 items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] transition-colors",
+                isReadonly
+                  ? "cursor-default opacity-40 text-muted-foreground"
+                  : "cursor-pointer text-muted-foreground/60 hover:text-primary hover:bg-primary/5",
+              ].join(" ")}
+              disabled={isReadonly}
+              onClick={() => handleChange("time")}
+              type="button"
+            >
+              <PencilIcon size={10} />
+              Change
+            </button>
+          </div>
+        )}
+
         <SummaryRow
-          icon={<CreditCardIcon className="text-muted-foreground/60" size={12} />}
+          icon={
+            <CreditCardIcon className="text-muted-foreground/60" size={12} />
+          }
           label="Insurance"
           value={insuranceValue}
         />
