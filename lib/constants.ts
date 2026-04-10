@@ -21,10 +21,10 @@ export const suggestions = [
 
 export const contextSuggestions: Record<string, string[]> = {
   "Schedule an Appointment": [
-    "I'd like to book an appointment — my name is Sarah Johnson, DOB 1985-03-15",
-    "I need to book an appointment as a new patient — my name is Emily Chen, DOB 1978-11-08",
-    "I'd like to schedule with a different doctor — my name is James Martinez, DOB 1990-07-22",
-    "I need to book an appointment — my name is Robert Williams, DOB 1965-05-30",
+    "I'd like to book an appointment",
+    "I need to book an appointment as a new patient",
+    "I'd like to schedule a follow-up visit",
+    "I need to book an appointment for a wellness check-up",
   ],
   "View Care Team": [
     "Who is my primary care physician?",
@@ -45,10 +45,10 @@ export const contextSuggestions: Record<string, string[]> = {
     "Are my children's immunizations up to date?",
   ],
   "Request Refills": [
-    "I need to refill my medication — my name is Sarah Johnson, DOB 1985-03-15",
-    "I'd like to refill a prescription — my name is Maria Garcia, DOB 1972-09-18",
-    "I need a refill but I'm not sure I have any left — my name is Emily Chen, DOB 1978-11-08",
-    "I'd like to refill and use a different pharmacy — my name is Robert Williams, DOB 1965-05-30",
+    "I need to refill my medications",
+    "I'd like to refill a prescription",
+    "I need a refill but I'm not sure I have any left",
+    "I'd like to refill and use a different pharmacy",
   ],
   "View and Pay Bill": [
     "Show me my current balance",
