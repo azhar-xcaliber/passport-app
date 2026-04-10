@@ -24,13 +24,21 @@ import { bookAppointment } from "@/lib/ai/tools/book-appointment";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { editDocument } from "@/lib/ai/tools/edit-document";
 import { getAvailableSlots } from "@/lib/ai/tools/get-available-slots";
+import { getClinicLocations } from "@/lib/ai/tools/get-clinic-locations";
+import { getDoctorsAtLocation } from "@/lib/ai/tools/get-doctors-at-location";
+import { getNearbyPharmacies } from "@/lib/ai/tools/get-nearby-pharmacies";
 import { getPatientAppointments } from "@/lib/ai/tools/get-patient-appointments";
+import { getPatientHistory } from "@/lib/ai/tools/get-patient-history";
+import { getPatientInsurance } from "@/lib/ai/tools/get-patient-insurance";
+import { getPatientMedications } from "@/lib/ai/tools/get-patient-medications";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { processRefillRequest } from "@/lib/ai/tools/process-refill-request";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { selectAppointmentType } from "@/lib/ai/tools/select-appointment-type";
+import { showAppointmentSummary } from "@/lib/ai/tools/show-appointment-summary";
 import { submitRefillRequest } from "@/lib/ai/tools/submit-refill-request";
 import { updateDocument } from "@/lib/ai/tools/update-document";
+import { verifyPatientIdentity } from "@/lib/ai/tools/verify-patient-identity";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
   createStreamId,
@@ -250,6 +258,14 @@ export async function POST(request: Request) {
                   "bookAppointment",
                   "processRefillRequest",
                   "submitRefillRequest",
+                  "verifyPatientIdentity",
+                  "getPatientMedications",
+                  "getNearbyPharmacies",
+                  "getPatientHistory",
+                  "getClinicLocations",
+                  "getDoctorsAtLocation",
+                  "getPatientInsurance",
+                  "showAppointmentSummary",
                   "createDocument",
                   "editDocument",
                   "updateDocument",
@@ -271,6 +287,14 @@ export async function POST(request: Request) {
             bookAppointment,
             processRefillRequest,
             submitRefillRequest,
+            verifyPatientIdentity,
+            getPatientMedications,
+            getNearbyPharmacies,
+            getPatientHistory,
+            getClinicLocations,
+            getDoctorsAtLocation,
+            getPatientInsurance,
+            showAppointmentSummary,
             createDocument: createDocument({
               session,
               dataStream,

@@ -20,8 +20,16 @@ import { MessageActions } from "./message-actions";
 import { MessageReasoning } from "./message-reasoning";
 import { PreviewAttachment } from "./preview-attachment";
 import { AppointmentConfirmation } from "./appointment-confirmation";
+import { AppointmentSummary } from "./appointment-summary";
 import { AppointmentTypeSelector } from "./appointment-type-selector";
 import { AvailableTimeSlots } from "./available-time-slots";
+import { ClinicLocationSelector } from "./clinic-location-selector";
+import { DoctorSelector } from "./doctor-selector";
+import { InsuranceInfo } from "./insurance-info";
+import { PatientHistory } from "./patient-history";
+import { PatientMedicationList } from "./patient-medication-list";
+import { PatientVerificationResult } from "./patient-verification-result";
+import { PharmacySelector } from "./pharmacy-selector";
 import { RefillConfirmation } from "./refill-confirmation";
 import { RefillRequestDetails } from "./refill-request-details";
 import { UpcomingAppointments } from "./upcoming-appointments";
@@ -312,6 +320,198 @@ const PurePreviewMessage = ({
         <div className={widthClass} key={toolCallId}>
           <Tool className="w-full" defaultOpen={true}>
             <ToolHeader state={state} type="tool-bookAppointment" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-verifyPatientIdentity") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,420px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <PatientVerificationResult data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-verifyPatientIdentity" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getPatientMedications") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,520px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <PatientMedicationList data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getPatientMedications" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getNearbyPharmacies") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,480px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <PharmacySelector data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getNearbyPharmacies" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getPatientHistory") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,480px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <PatientHistory data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getPatientHistory" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getClinicLocations") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,480px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <ClinicLocationSelector data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getClinicLocations" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getDoctorsAtLocation") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,480px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <DoctorSelector data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getDoctorsAtLocation" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-getPatientInsurance") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,420px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <InsuranceInfo data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-getPatientInsurance" />
+            <ToolContent>
+              {state === "input-available" && <ToolInput input={part.input} />}
+            </ToolContent>
+          </Tool>
+        </div>
+      );
+    }
+
+    if (type === "tool-showAppointmentSummary") {
+      const { toolCallId, state } = part;
+      const widthClass = "w-[min(100%,520px)]";
+
+      if (state === "output-available") {
+        return (
+          <div className={widthClass} key={toolCallId}>
+            <AppointmentSummary data={part.output} />
+          </div>
+        );
+      }
+
+      return (
+        <div className={widthClass} key={toolCallId}>
+          <Tool className="w-full" defaultOpen={true}>
+            <ToolHeader state={state} type="tool-showAppointmentSummary" />
             <ToolContent>
               {state === "input-available" && <ToolInput input={part.input} />}
             </ToolContent>

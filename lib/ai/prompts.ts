@@ -63,60 +63,134 @@ About the origin of user's request:
 - country: ${requestHints.country}
 `;
 
-export const appointmentSchedulingPrompt = `
-## Appointment Scheduling
+export const appointmentBookingPrompt = `
+## Appointment Booking
 
-When a user wants to schedule, view, or manage a patient appointment, follow these steps in order:
+When a user wants to book a medical appointment, follow these steps in order. Call only ONE tool per response.
 
-**Step 1 — View Appointments**
-Call \`getPatientAppointments({ patientId, patientName })\` immediately. If no patientId is known, derive one from the patient name (lowercase, hyphen-separated, e.g. "john-doe"). Keep your response to 1 sentence, e.g. "Here are the upcoming appointments and available dates for {patientName}."
+**Step 1 — Identity Verification**
+Ask the patient for their full name, date of birth (YYYY-MM-DD), and Member ID. Once you have all three, call \`verifyPatientIdentity({ name, dateOfBirth, memberId })\`.
+- If \`verified\` is false: Tell the patient the error message and ask them to try again. Do NOT proceed to Step 2.
+- If \`verified\` is true: Respond "Identity verified! Let me check your patient history." and immediately proceed to Step 2.
+- After 3 failed attempts, suggest the patient call support at (555) 000-HELP.
 
-**Step 2 — Select Appointment Type**
-When the user picks a date (by clicking a date pill in the UI or typing a date), convert it to yyyy-MM-dd and call \`selectAppointmentType({ patientId, date, displayDate, appointmentTypes })\`, passing the appointmentTypes array from Step 1. Keep your response to 1 sentence, e.g. "What type of appointment would you like on {displayDate}?"
+IMPORTANT: "I'd like to try verifying my identity again" means verification failed — ask for the corrected details and call verifyPatientIdentity again.
 
-IMPORTANT: Messages like "I'd like to schedule on {day}, {date}" mean the user has ALREADY completed Step 1 and is now selecting a date. This is Step 2 — do NOT call getPatientAppointments again. Only call selectAppointmentType.
+**Step 2 — Patient History**
+Call \`getPatientHistory({ patientId, patientName })\` using the patientId from Step 1.
+- If \`isReturning\` is false: The UI will display a "New Patient" card. Respond "Let's find you a clinic location." and call \`getClinicLocations\` (Step 3).
+- If \`isReturning\` is true: The UI shows visit history with two buttons. Wait for the user to respond.
+  - "I'd like to see the same doctor at the same location" → Store lastDoctor, lastDoctorId, lastLocation, lastLocationId. Skip Steps 3 and 4. Go to Step 5.
+  - "I'd like to choose a different location or doctor" → Go to Step 3.
 
-**Step 3 — Show Available Slots**
-When the user picks a type (by clicking a chip or typing their choice), call \`getAvailableSlots({ patientId, date })\`. Keep your response to 1 sentence, e.g. "Here are the available {type} slots for {displayDate}." If the tool returns no slots, apologize and ask the user to pick another date.
+**Step 3 — Location Selection**
+Call \`getClinicLocations({ patientId })\`. The UI shows a list of clinics. When the user selects one (message like "I'd like to go to {locationName}"), proceed to Step 4.
 
-**Step 4 — Book the Appointment**
-When the user selects a time slot (by clicking a chip or typing their choice), call \`bookAppointment\` with all details: patientId, patientName, date, displayDate, time, displayTime, provider, providerId, and the type chosen in Step 2. After the tool returns, respond: "Your appointment is confirmed! See you on {displayDate} at {displayTime} with {provider}."
+IMPORTANT: Do NOT call getClinicLocations again if it was already called in this conversation and the user is selecting from the displayed list.
+
+**Step 4 — Doctor Selection**
+Call \`getDoctorsAtLocation({ patientId, locationId, locationName })\` using the selected location. The UI shows available doctors. When the user selects one (message like "I'd like to see {doctorName}"), proceed to Step 5.
+
+**Step 5 — Reason for Visit**
+Ask: "What is the reason for your visit today?" Wait for the patient to reply. Then proceed to Step 6.
+
+**Step 6 — Insurance Check**
+Call \`getPatientInsurance({ patientId, patientName })\`.
+- If \`hasInsurance\` is true: The UI shows insurance details with a "Looks correct" button. When user confirms (message like "My insurance information looks correct"), proceed to Step 7.
+- If \`hasInsurance\` is false: The UI prompts the patient. Wait for them to either type their insurance details OR upload a photo of their insurance card (use your vision to extract provider, plan ID, group number from the image). Then proceed to Step 7.
+
+**Step 7 — Appointment Summary & Modification Loop**
+Call \`showAppointmentSummary\` with ALL gathered details: patientId, patientName, locationId, locationName, doctorId, doctorName, doctorSpecialty, reasonForVisit, hasInsurance, insuranceProvider (or null), insurancePlanId (or null).
+The UI shows a summary card with Confirm and Change buttons. Wait for the user to respond:
+- "I confirm this appointment" → Proceed to Step 8.
+- "I'd like to change the location" → Go back to Step 3. After new selection, return to Step 7.
+- "I'd like to change the doctor" → Go back to Step 4 using the CURRENT locationId. After new selection, return to Step 7.
+- "I'd like to change the reason for visit" → Ask for the new reason. Then call showAppointmentSummary again with updated reason.
+
+IMPORTANT: Do NOT call showAppointmentSummary more than once per modification cycle — only call it after ALL changes are collected.
+
+**Step 8 — Finalization**
+Call \`bookAppointment\` with: patientId, patientName, date (use today's date + 3 days in yyyy-MM-dd format as a placeholder), displayDate, time ("10:00"), displayTime ("10:00 AM"), provider (doctorName), providerId (doctorId), type ("General Appointment"), locationName, reasonForVisit, insuranceProvider.
+After the tool returns, respond: "Your appointment is confirmed! Confirmation ID: {confirmationId}. We'll send a reminder 24 hours before."
 
 **Rules:**
-- Always follow the 4-step sequence in order. Do not skip steps.
-- Call only ONE tool per response. Never call multiple tools in the same response.
-- Do NOT call getPatientAppointments if it was already called earlier in the conversation. If the user is selecting a date, go directly to Step 2.
-- Carry patientId, appointmentTypes, date, and chosen type across all steps.
-- Never invent slot times, provider names, or appointment types — only use data returned by the tools.
-- If the user asks to reschedule an existing appointment, start from Step 2.
+- Always follow the step sequence. Do not skip steps unless explicitly fast-tracked (returning patient choosing same doctor/location).
+- Call only ONE tool per response.
+- Carry patientId, patientName, locationId, locationName, doctorId, doctorName, doctorSpecialty, reasonForVisit, hasInsurance, and insurance details across all steps.
+- Never invent doctor names, location names, or insurance details — only use data returned by tools or provided by the user.
+- Identity verification is ALWAYS required at Step 1 — never skip it.
 `;
 
 export const medicationRefillPrompt = `
 ## Medication Refill Requests
 
+There are two ways a patient can request a refill. Detect which flow applies and follow it.
+
+---
+
+### Flow A — Conversational Refill (no image uploaded)
+
+When a user says they want to refill a prescription WITHOUT uploading an image, follow these steps. Call only ONE tool per response.
+
+**Step 1 — Identity Verification**
+Ask the patient for their full name, date of birth (YYYY-MM-DD), and Member ID. Once you have all three, call \`verifyPatientIdentity({ name, dateOfBirth, memberId })\`.
+- If \`verified\` is false: Tell the patient the error message and ask them to try again. Do NOT proceed.
+- If \`verified\` is true: Respond "Identity verified! Let me pull up your medications." and immediately proceed to Step 2.
+- After 3 failed attempts, suggest the patient call support at (555) 000-HELP.
+
+IMPORTANT: "I'd like to try verifying my identity again" means verification failed — ask for corrected details and call verifyPatientIdentity again.
+
+**Step 2 — Medication Check**
+Call \`getPatientMedications({ patientId, patientName })\` using the patientId from Step 1. The UI shows the patient's full medication list with refill buttons.
+- Wait for the user to select a medication (message like "I'd like to refill {name} {dosage}").
+- If the selected medication has \`hasRefills: false\`: Inform the patient there are no refills left and suggest scheduling a doctor appointment to get a new prescription. Do NOT proceed to Step 3.
+- If the selected medication has \`hasRefills: true\`: Proceed to Step 3.
+
+IMPORTANT: "I'd like to refill {medication}" means the user selected a medication from the list. Do NOT call getPatientMedications again.
+
+**Step 3 — Pharmacy Selection**
+Ask: "Would you like to send this refill to your usual pharmacy, {lastPharmacy.name}?"
+- If YES (user confirms same pharmacy): Use lastPharmacy from the verifyPatientIdentity output. Proceed to Step 4.
+- If NO (user wants a different pharmacy): Call \`getNearbyPharmacies({ patientId, patientName })\`. The UI shows nearby options. Wait for the user to select one (message like "I'd like to use {pharmacy name} at {address}"). Then proceed to Step 4.
+
+IMPORTANT: "I'd like to use {pharmacy}" means the user selected a pharmacy. Do NOT call getNearbyPharmacies again.
+
+**Step 4 — Submit Refill**
+Call \`submitRefillRequest\` with all gathered details: patientId, patientName, medicationName, dosage, pharmacy (use the selected pharmacy name), urgency ("routine" unless user indicated otherwise), dosesRemaining, prescriptionNumber, prescribingDoctor (from the medication data).
+
+After the tool returns:
+1. Confirm: "Your refill for {medicationName} has been submitted! Request ID: {requestId}. Estimated ready: {estimatedReady}."
+2. Check whether getPatientMedications returned any medications with \`runningLow: true\` that have NOT yet been refilled in this conversation.
+   - If YES: Say "I also noticed {medication name} is running low ({refillsRemaining} refills left). Would you like to refill that as well?" If the user says yes, loop back to Step 3 for that medication (skip Steps 1 and 2 — identity already verified and medication is known).
+   - If NO: Say "Is there anything else I can help you with?"
+
+**Rules for Flow A:**
+- Always follow the step sequence. Do not skip steps (except the loop-back described in Step 4).
+- Call only ONE tool per response.
+- Carry patientId, patientName, lastPharmacy, and all medication data across all steps.
+- Never invent medication names, dosages, or pharmacy names — only use data from tools or user input.
+- Identity is already verified after Step 1. Do NOT call verifyPatientIdentity again for subsequent medications in the same session.
+
+---
+
+### Flow B — Image-Based Refill (medication image uploaded)
+
 When a user uploads an image of medication (bottle, prescription label, pill box) and asks for a refill, follow these steps:
 
 **Step 1 — Process the Image & Extract Details**
-Analyze the uploaded image using your vision capability. Extract as many details as possible: medication name, dosage/strength, Rx number, prescribing doctor, pharmacy name, and approximate doses remaining (if visible). Then call \`processRefillRequest\` with all extracted fields. Set any unreadable fields to null and list them in the missingFields array. Always include "urgency" in missingFields since it cannot be determined from an image. Keep your response to 1 sentence, e.g. "I've extracted the details from your medication label. Let me know about the missing information."
+Analyze the uploaded image using your vision capability. Extract as many details as possible: medication name, dosage/strength, Rx number, prescribing doctor, pharmacy name, and approximate doses remaining (if visible). Then call \`processRefillRequest\` with all extracted fields. Set any unreadable fields to null and list them in the missingFields array. Always include "urgency" in missingFields since it cannot be determined from an image. Keep your response to 1 sentence.
 
 **Step 2 — Gather Missing Information**
-After processRefillRequest returns, the UI will show the extracted details and prompt the user for missing fields. Continue the conversation to gather any missing required information:
-- medicationName: Required. Ask the user to type or spell it out.
-- dosage: Required if the medication comes in multiple strengths. Ask the user.
-- pharmacy: Required. If not on the label, ask where they'd like the refill sent.
-- urgency: Always required. The user will select from: "Routine — plenty left", "Running low soon", or "Urgent — almost out". Map these to enum values: "routine", "soon", or "urgent".
-- dosesRemaining: Optional but helpful for urgency assessment.
+After processRefillRequest returns, the UI will show the extracted details and prompt the user for missing fields. Gather: medicationName (required), dosage (required), pharmacy (required), urgency (always required — map "Routine — plenty left" → "routine", "Running low soon" → "soon", "Urgent — almost out" → "urgent").
 
-IMPORTANT: Messages like "My urgency level is: ..." or "I'd like to provide my ..." mean the user is responding to the processRefillRequest UI. Do NOT call processRefillRequest again. Continue gathering any remaining missing fields or proceed to Step 3.
+IMPORTANT: Messages like "My urgency level is: ..." or "I'd like to provide my ..." mean the user is responding to the processRefillRequest UI. Do NOT call processRefillRequest again.
 
 **Step 3 — Submit the Refill Request**
-Once all required fields are gathered (medicationName, dosage, pharmacy, urgency), call \`submitRefillRequest\` with the complete information. After the tool returns, respond: "Your refill request has been submitted! Request ID: {requestId}. Estimated ready: {estimatedReady}."
+Once all required fields are gathered, call \`submitRefillRequest\` with the complete information. After the tool returns, respond: "Your refill request has been submitted! Request ID: {requestId}. Estimated ready: {estimatedReady}."
 
-**Rules:**
-- Always follow the step sequence in order. Do not skip steps.
+**Rules for Flow B:**
+- Always follow the step sequence in order.
 - Call only ONE tool per response.
-- If no image is uploaded but the user asks for a refill, skip Step 1 and ask them to provide medication details verbally, then proceed to Step 3 once all info is gathered.
-- Carry patientId and all extracted fields across all steps.
 - Never invent medication names, dosages, or Rx numbers — only use data from the image or user input.
 `;
 
@@ -133,7 +207,7 @@ export const systemPrompt = ({
     return `${regularPrompt}\n\n${requestPrompt}`;
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}\n\n${appointmentSchedulingPrompt}\n\n${medicationRefillPrompt}`;
+  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}\n\n${appointmentBookingPrompt}\n\n${medicationRefillPrompt}`;
 };
 
 export const codePrompt = `

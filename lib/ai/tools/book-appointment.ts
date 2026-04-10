@@ -21,8 +21,11 @@ export const bookAppointment = tool({
     provider: z.string().describe("Full provider name, e.g. Dr. Sarah Chen"),
     providerId: z.string().describe("Provider's unique identifier"),
     type: z.string().describe("Appointment type, e.g. General Checkup"),
+    locationName: z.string().optional().describe("Clinic location name, e.g. Downtown Medical Center"),
+    reasonForVisit: z.string().optional().describe("Patient's reason for the visit"),
+    insuranceProvider: z.string().nullable().optional().describe("Insurance provider name, if known"),
   }),
-  execute: async (input) => {
+  execute: (input) => {
     const displayDate =
       input.displayDate ?? format(parseISO(input.date), "EEEE, MMMM d, yyyy");
     const confirmationId = generateUUID().slice(0, 8).toUpperCase();
@@ -37,6 +40,9 @@ export const bookAppointment = tool({
       provider: input.provider,
       providerId: input.providerId,
       type: input.type,
+      locationName: input.locationName ?? null,
+      reasonForVisit: input.reasonForVisit ?? null,
+      insuranceProvider: input.insuranceProvider ?? null,
       confirmationId,
     };
   },
