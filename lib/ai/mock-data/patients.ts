@@ -450,17 +450,14 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
 
 // ─── Lookup Helpers ──────────────────────────────────────────────────────────
 
-/** Case-insensitive name match + exact DOB and memberId match. */
-export function findPatient(
-  name: string,
-  dob: string,
-  memberId: string
-): MockPatient | null {
-  const patient = MOCK_PATIENTS[memberId.toUpperCase()];
-  if (!patient) return null;
-  if (patient.name.toLowerCase() !== name.toLowerCase()) return null;
-  if (patient.dob !== dob) return null;
-  return patient;
+/** Case-insensitive name match + exact DOB match. */
+export function findPatient(name: string, dob: string): MockPatient | null {
+  return (
+    Object.values(MOCK_PATIENTS).find(
+      (p) =>
+        p.name.toLowerCase() === name.toLowerCase() && p.dob === dob
+    ) ?? null
+  );
 }
 
 /** Find patient by patientId (used after verification). */

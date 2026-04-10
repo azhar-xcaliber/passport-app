@@ -69,7 +69,7 @@ export const appointmentBookingPrompt = `
 When a user wants to book a medical appointment, follow these steps in order. Call only ONE tool per response.
 
 **Step 1 — Identity Verification**
-Ask the patient for their full name, date of birth (YYYY-MM-DD), and Member ID. Once you have all three, call \`verifyPatientIdentity({ name, dateOfBirth, memberId })\`.
+Ask the patient for their full name and date of birth (YYYY-MM-DD). Once you have both, call \`verifyPatientIdentity({ name, dateOfBirth })\`.
 - If \`verified\` is false: Tell the patient the error message and ask them to try again. Do NOT proceed to Step 2.
 - If \`verified\` is true: Respond "Identity verified! Let me check your patient history." and immediately proceed to Step 2.
 - After 3 failed attempts, suggest the patient call support at (555) 000-HELP.
@@ -139,7 +139,7 @@ There are two ways a patient can request a refill. Detect which flow applies and
 When a user says they want to refill a prescription WITHOUT uploading an image, follow these steps. Call only ONE tool per response.
 
 **Step 1 — Identity Verification**
-Ask the patient for their full name, date of birth (YYYY-MM-DD), and Member ID. Once you have all three, call \`verifyPatientIdentity({ name, dateOfBirth, memberId })\`.
+Ask the patient for their full name and date of birth (YYYY-MM-DD). Once you have both, call \`verifyPatientIdentity({ name, dateOfBirth })\`.
 - If \`verified\` is false: Tell the patient the error message and ask them to try again. Do NOT proceed.
 - If \`verified\` is true: Respond "Identity verified! Let me pull up your medications." and immediately proceed to Step 2.
 - After 3 failed attempts, suggest the patient call support at (555) 000-HELP.

@@ -7,6 +7,7 @@ type VerificationSuccess = {
   verified: true;
   patientId: string;
   patientName: string;
+  dateOfBirth: string;
   memberId: string;
   lastPharmacy: { id: string; name: string; address: string };
 };
@@ -62,10 +63,10 @@ export function PatientVerificationResult({
             </div>
             <div className="min-w-0 flex-1">
               <div className="text-muted-foreground/60 text-[10px] uppercase tracking-wider">
-                Member ID
+                Date of Birth
               </div>
-              <div className="truncate font-mono font-medium text-foreground text-xs">
-                {data.memberId}
+              <div className="truncate font-medium text-foreground text-xs">
+                {data.dateOfBirth}
               </div>
             </div>
           </div>
