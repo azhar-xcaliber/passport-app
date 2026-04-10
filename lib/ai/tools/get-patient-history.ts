@@ -33,6 +33,7 @@ export const getPatientHistory = tool({
       isReturning: patient.isReturning,
       lastDoctor: patient.lastDoctor,
       lastDoctorId: patient.lastDoctorId,
+      lastDoctorNpi: patient.lastDoctorNpi,
       lastLocation: patient.lastLocation,
       lastLocationId: patient.lastLocationId,
       visitHistory: patient.visitHistory,

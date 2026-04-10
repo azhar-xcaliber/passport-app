@@ -42,7 +42,8 @@ export type MockPatient = {
   // Appointment booking fields
   isReturning: boolean;
   lastDoctor: string | null;
-  lastDoctorId: string | null;
+  lastDoctorId: string | null;  // provider_enc_npi
+  lastDoctorNpi: string | null; // provider_npi (used by Healow API)
   lastLocation: string | null;
   lastLocationId: string | null;
   insurance: MockInsurance | null;
@@ -71,7 +72,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-03-01",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Sarah Chen",
+        prescribingDoctor: "Gerald Ray, DO",
       },
       {
         name: "Metformin",
@@ -80,14 +81,15 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 12,
         lastFilled: "2026-03-15",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Sarah Chen",
+        prescribingDoctor: "Gerald Ray, DO",
       },
     ],
     isReturning: true,
-    lastDoctor: "Dr. Sarah Chen",
-    lastDoctorId: "prov-001",
-    lastLocation: "Downtown Medical Center",
-    lastLocationId: "loc-001",
+    lastDoctor: "Gerald Ray, DO",
+    lastDoctorId: "gQdekM2bdXbOyVjp",
+    lastDoctorNpi: "1720067119",
+    lastLocation: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+    lastLocationId: "210",
     insurance: {
       provider: "Blue Cross Blue Shield",
       planId: "BCBS-PPO-2024",
@@ -97,14 +99,14 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     visitHistory: [
       {
         date: "2026-02-10",
-        doctor: "Dr. Sarah Chen",
-        location: "Downtown Medical Center",
+        doctor: "Gerald Ray, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Annual Physical",
       },
       {
         date: "2025-11-05",
-        doctor: "Dr. Sarah Chen",
-        location: "Downtown Medical Center",
+        doctor: "Gerald Ray, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Blood Pressure Follow-up",
       },
     ],
@@ -129,14 +131,15 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-02-20",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Michael Torres",
+        prescribingDoctor: "Radhika Vayani, DO",
       },
     ],
     isReturning: true,
-    lastDoctor: "Dr. Michael Torres",
-    lastDoctorId: "prov-002",
-    lastLocation: "Westside Health Clinic",
-    lastLocationId: "loc-002",
+    lastDoctor: "Radhika Vayani, DO",
+    lastDoctorId: "MpLVyW9jjlxoGrd5",
+    lastDoctorNpi: "1396068870",
+    lastLocation: "BE WELL PRIMARY CARE MEDICINE AZLE",
+    lastLocationId: "224",
     insurance: {
       provider: "Aetna",
       planId: "AET-HMO-2024",
@@ -146,8 +149,8 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     visitHistory: [
       {
         date: "2026-01-15",
-        doctor: "Dr. Michael Torres",
-        location: "Westside Health Clinic",
+        doctor: "Radhika Vayani, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
         reason: "Cholesterol Follow-up",
       },
     ],
@@ -172,12 +175,13 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 3,
         lastFilled: "2026-01-10",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Aisha Patel",
+        prescribingDoctor: "Amy Mitchell, FNP",
       },
     ],
     isReturning: false,
     lastDoctor: null,
     lastDoctorId: null,
+    lastDoctorNpi: null,
     lastLocation: null,
     lastLocationId: null,
     insurance: null,
@@ -203,14 +207,15 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-03-10",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Sarah Chen",
+        prescribingDoctor: "Gerald Ray, DO",
       },
     ],
     isReturning: true,
-    lastDoctor: "Dr. Aisha Patel",
-    lastDoctorId: "prov-003",
-    lastLocation: "Downtown Medical Center",
-    lastLocationId: "loc-001",
+    lastDoctor: "Amy Mitchell, FNP",
+    lastDoctorId: "aLe2GNe84mOY7zg6",
+    lastDoctorNpi: "1407485345",
+    lastLocation: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+    lastLocationId: "210",
     insurance: {
       provider: "UnitedHealthcare",
       planId: "UHC-EPO-2024",
@@ -220,14 +225,14 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     visitHistory: [
       {
         date: "2026-03-01",
-        doctor: "Dr. Aisha Patel",
-        location: "Downtown Medical Center",
+        doctor: "Amy Mitchell, FNP",
+        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Specialist Consultation",
       },
       {
         date: "2025-12-15",
-        doctor: "Dr. Sarah Chen",
-        location: "Downtown Medical Center",
+        doctor: "Gerald Ray, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
         reason: "General Checkup",
       },
     ],
@@ -248,11 +253,11 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
       {
         name: "Levothyroxine",
         dosage: "50mcg",
-        refillsRemaining: 2,
+        refillsRemaining: 0,
         refillsTotal: 6,
         lastFilled: "2026-03-01",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Aisha Patel",
+        prescribingDoctor: "Amy Mitchell, FNP",
       },
       {
         name: "Metoprolol",
@@ -261,7 +266,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-02-28",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Michael Torres",
+        prescribingDoctor: "Radhika Vayani, DO",
       },
       {
         name: "Hydrochlorothiazide",
@@ -270,26 +275,27 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-03-20",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Sarah Chen",
+        prescribingDoctor: "Gerald Ray, DO",
       },
     ],
     isReturning: true,
-    lastDoctor: "Dr. Aisha Patel",
-    lastDoctorId: "prov-003",
-    lastLocation: "Northside Family Practice",
-    lastLocationId: "loc-003",
+    lastDoctor: "Amy Mitchell, FNP",
+    lastDoctorId: "aLe2GNe84mOY7zg6",
+    lastDoctorNpi: "1407485345",
+    lastLocation: "BE WELL PRIMARY CARE MEDICINE DENTON",
+    lastLocationId: "225",
     insurance: null,
     visitHistory: [
       {
         date: "2026-02-20",
-        doctor: "Dr. Aisha Patel",
-        location: "Northside Family Practice",
+        doctor: "Amy Mitchell, FNP",
+        location: "BE WELL PRIMARY CARE MEDICINE DENTON",
         reason: "Thyroid Follow-up",
       },
       {
         date: "2025-10-10",
-        doctor: "Dr. Michael Torres",
-        location: "Westside Health Clinic",
+        doctor: "Radhika Vayani, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
         reason: "Blood Pressure Management",
       },
     ],
@@ -314,12 +320,13 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-03-05",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Lisa Nguyen",
+        prescribingDoctor: "Morgan Perks, FNP",
       },
     ],
     isReturning: false,
     lastDoctor: null,
     lastDoctorId: null,
+    lastDoctorNpi: null,
     lastLocation: null,
     lastLocationId: null,
     insurance: {
@@ -350,14 +357,15 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 3,
         lastFilled: "2026-02-15",
         daysSupply: 30,
-        prescribingDoctor: "Dr. David Kim",
+        prescribingDoctor: "Morgan Perks, FNP",
       },
     ],
     isReturning: true,
-    lastDoctor: "Dr. Sarah Chen",
-    lastDoctorId: "prov-001",
-    lastLocation: "Northside Family Practice",
-    lastLocationId: "loc-003",
+    lastDoctor: "Gerald Ray, DO",
+    lastDoctorId: "gQdekM2bdXbOyVjp",
+    lastDoctorNpi: "1720067119",
+    lastLocation: "BE WELL PRIMARY CARE MEDICINE-KELLER",
+    lastLocationId: "227",
     insurance: {
       provider: "Anthem",
       planId: "ANT-PPO-2024",
@@ -367,8 +375,8 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     visitHistory: [
       {
         date: "2026-01-20",
-        doctor: "Dr. Sarah Chen",
-        location: "Northside Family Practice",
+        doctor: "Gerald Ray, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE DENTON",
         reason: "Asthma Follow-up",
       },
     ],
@@ -393,7 +401,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2025-12-01",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Michael Torres",
+        prescribingDoctor: "Radhika Vayani, DO",
       },
       {
         name: "Glipizide",
@@ -402,7 +410,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-02-25",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Michael Torres",
+        prescribingDoctor: "Radhika Vayani, DO",
       },
       {
         name: "Losartan",
@@ -411,14 +419,15 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
         refillsTotal: 6,
         lastFilled: "2026-03-01",
         daysSupply: 30,
-        prescribingDoctor: "Dr. Aisha Patel",
+        prescribingDoctor: "Amy Mitchell, FNP",
       },
     ],
     isReturning: true,
-    lastDoctor: "Dr. Michael Torres",
-    lastDoctorId: "prov-002",
-    lastLocation: "Westside Health Clinic",
-    lastLocationId: "loc-002",
+    lastDoctor: "Radhika Vayani, DO",
+    lastDoctorId: "MpLVyW9jjlxoGrd5",
+    lastDoctorNpi: "1396068870",
+    lastLocation: "BE WELL PRIMARY CARE MEDICINE AZLE",
+    lastLocationId: "224",
     insurance: {
       provider: "Medicare",
       planId: "MCR-ADV-2024",
@@ -428,20 +437,20 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     visitHistory: [
       {
         date: "2026-02-01",
-        doctor: "Dr. Michael Torres",
-        location: "Westside Health Clinic",
+        doctor: "Radhika Vayani, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
         reason: "Diabetes Management",
       },
       {
         date: "2025-11-15",
-        doctor: "Dr. Aisha Patel",
-        location: "Downtown Medical Center",
+        doctor: "Amy Mitchell, FNP",
+        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Hypertension Follow-up",
       },
       {
         date: "2025-08-20",
-        doctor: "Dr. Michael Torres",
-        location: "Westside Health Clinic",
+        doctor: "Radhika Vayani, DO",
+        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
         reason: "Lab Review",
       },
     ],
@@ -454,8 +463,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
 export function findPatient(name: string, dob: string): MockPatient | null {
   return (
     Object.values(MOCK_PATIENTS).find(
-      (p) =>
-        p.name.toLowerCase() === name.toLowerCase() && p.dob === dob
+      (p) => p.name.toLowerCase() === name.toLowerCase() && p.dob === dob
     ) ?? null
   );
 }
@@ -535,61 +543,129 @@ export type ClinicLocation = {
   id: string;
   name: string;
   address: string;
-  phone: string;
+  lat: number;
+  lng: number;
+  timezone: string;
 };
 
 export const CLINIC_LOCATIONS: ClinicLocation[] = [
   {
-    id: "loc-001",
-    name: "Downtown Medical Center",
-    address: "100 Main St, Suite 200",
-    phone: "(555) 100-2000",
+    id: "210",
+    name: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+    address: "3800 NORTH TARRANT PARKWAY, Suite 210, FORT WORTH, TX 76244",
+    lat: 32.934_024,
+    lng: -97.250_604,
+    timezone: "CST",
   },
   {
-    id: "loc-002",
-    name: "Westside Health Clinic",
-    address: "450 West Blvd",
-    phone: "(555) 200-3000",
+    id: "224",
+    name: "BE WELL PRIMARY CARE MEDICINE AZLE",
+    address: "721 SOUTHEAST PKWY, AZLE, TX 76020",
+    lat: 32.91,
+    lng: -97.557_24,
+    timezone: "CST",
   },
   {
-    id: "loc-003",
-    name: "Northside Family Practice",
-    address: "789 North Ave",
-    phone: "(555) 300-4000",
+    id: "225",
+    name: "BE WELL PRIMARY CARE MEDICINE DENTON",
+    address: "3200 COLORADO BLVD, STE 202, DENTON, TX 76210",
+    lat: 33.145_623,
+    lng: -97.090_468,
+    timezone: "CST",
   },
   {
-    id: "loc-004",
-    name: "Lakefront Medical Group",
-    address: "55 Lakeshore Dr",
-    phone: "(555) 400-5000",
+    id: "226",
+    name: "BE WELL PRIMARY CARE BRIDGEPORT",
+    address: "808 WOODROW WILSON RAY CIR, BRIDGEPORT, TX 76426",
+    lat: 33.151_387,
+    lng: -97.821_373,
+    timezone: "CST",
+  },
+  {
+    id: "227",
+    name: "BE WELL PRIMARY CARE MEDICINE-KELLER",
+    address: "601 S MAIN ST, STE 200, KELLER, TX 76248",
+    lat: 32.930_266,
+    lng: -97.247_254,
+    timezone: "CST",
+  },
+  {
+    id: "229",
+    name: "BE WELL PRIMARY CARE SAGINAW",
+    address: "709 W BAILEY BOSWELL RD, FORT WORTH, TX 76179",
+    lat: 32.9064,
+    lng: -97.433_22,
+    timezone: "CST",
   },
 ];
 
 // ─── All Doctors ─────────────────────────────────────────────────────────────
 
 export type Doctor = {
-  id: string;
+  id: string; // provider_enc_npi
+  npi: string;
   name: string;
+  degree: string;
+  gender: string;
   specialty: string;
+  acceptingNewPatients: boolean;
+  languages: string;
+  bio: string;
 };
 
 export const ALL_DOCTORS: Doctor[] = [
-  { id: "prov-001", name: "Dr. Sarah Chen", specialty: "Primary Care" },
   {
-    id: "prov-002",
-    name: "Dr. Michael Torres",
-    specialty: "Internal Medicine",
+    id: "aLe2GNe84mOY7zg6",
+    npi: "1407485345",
+    name: "Amy Mitchell",
+    degree: "FNP",
+    gender: "female",
+    specialty: "Nurse Practitioner",
+    acceptingNewPatients: true,
+    languages: "English",
+    bio: "Amy brings a broad clinical background that includes Emergency Medicine, Urgent Care, and Primary Care across the lifespan, caring for adults, adolescents, and pediatric patients. She is especially passionate about patient education and preventive care, striving to empower her patients, family, and community to live healthier lives every day.",
   },
-  { id: "prov-003", name: "Dr. Aisha Patel", specialty: "Family Medicine" },
-  { id: "prov-004", name: "Dr. David Kim", specialty: "General Practice" },
-  { id: "prov-005", name: "Dr. Lisa Nguyen", specialty: "Internal Medicine" },
-  { id: "prov-006", name: "Dr. James Wilson", specialty: "Family Medicine" },
+  {
+    id: "gQdekM2bdXbOyVjp",
+    npi: "1720067119",
+    name: "Gerald Ray",
+    degree: "DO",
+    gender: "male",
+    specialty: "Family Medicine",
+    acceptingNewPatients: true,
+    languages: "English",
+    bio: "Dr. Ray is board certified in family practice/omt and graduated from University of Texas at Austin Dell Medical School in 1996 and has 29 years experience as a Family Care Physician.",
+  },
+  {
+    id: "QYLry2ARO68zkn3b",
+    npi: "1174027999",
+    name: "Morgan Perks",
+    degree: "FNP",
+    gender: "female",
+    specialty: "Nurse Practitioner-Family",
+    acceptingNewPatients: true,
+    languages: "English",
+    bio: "Morgan is a Family Nurse Practioner who graduated from Walden University with Master's in Nursing and is certified Family Nurse Practioner. Morgan has been in Practice as a Family Nurse Practioner for 3 years.",
+  },
+  {
+    id: "MpLVyW9jjlxoGrd5",
+    npi: "1396068870",
+    name: "Radhika Vayani",
+    degree: "DO",
+    gender: "female",
+    specialty: "Internal Medicine",
+    acceptingNewPatients: true,
+    languages: "English",
+    bio: "Dr. Radhika Vayani is a warm and compassionate primary care doctor specializing in internal medicine caters to the communities of Fort Worth and Keller Texas.",
+  },
 ];
 
 // Mapping of which doctors are available at each clinic location
 export const DOCTORS_BY_LOCATION: Record<string, string[]> = {
-  "loc-001": ["prov-001", "prov-003", "prov-004"], // Downtown
-  "loc-002": ["prov-002", "prov-005", "prov-006"], // Westside
-  "loc-003": ["prov-001", "prov-003", "prov-006"], // Northside
-  "loc-004": ["prov-002", "prov-004", "prov-005"], // Lakefront
+  "210": ["aLe2GNe84mOY7zg6", "gQdekM2bdXbOyVjp", "MpLVyW9jjlxoGrd5"], // Alliance
+  "224": ["gQdekM2bdXbOyVjp", "QYLry2ARO68zkn3b", "MpLVyW9jjlxoGrd5"], // Azle
+  "225": ["aLe2GNe84mOY7zg6", "QYLry2ARO68zkn3b", "gQdekM2bdXbOyVjp"], // Denton
+  "226": ["MpLVyW9jjlxoGrd5", "gQdekM2bdXbOyVjp", "QYLry2ARO68zkn3b"], // Bridgeport
+  "227": ["aLe2GNe84mOY7zg6", "gQdekM2bdXbOyVjp", "QYLry2ARO68zkn3b", "MpLVyW9jjlxoGrd5"], // Keller
+  "229": ["aLe2GNe84mOY7zg6", "MpLVyW9jjlxoGrd5", "QYLry2ARO68zkn3b"], // Saginaw
 };

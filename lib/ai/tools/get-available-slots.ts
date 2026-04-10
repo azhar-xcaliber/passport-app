@@ -36,11 +36,11 @@ export const getAvailableSlots = tool({
     startDate,
   }) => {
     try {
-      const apuId = process.env.HEALOW_APU_ID ?? "311299";
+      const envApuId = process.env.HEALOW_APU_ID ?? "311299";
       const response = await healowPost("GetProviderSlotsAtFacility", {
         oa_source: "3",
         provider_npi: providerNpi,
-        apu_id: apuId,
+        apu_id: envApuId,
         facility_id: facilityId,
         start_date: startDate,
         time_pref: "anytime",
@@ -51,29 +51,28 @@ export const getAvailableSlots = tool({
         package_questionnaire_answer: "",
       });
 
-      const data = response as {
-        start_date: string;
-        end_date: string;
-        prov_slots: {
-          provider_npi: number;
-          apu_id: number;
-          facility_id: number;
+      const provSlots = response.prov_slots as {
+        provider_npi: number;
+        apu_id: number;
+        facility_id: number;
+        appt_slots?: Array<{
+          appt_date: string;
           appt_slots: Array<{
-            appt_date: string;
-            appt_slots: Array<{
-              prov_id: number;
-              fac_id: number;
-              date: string;
-              time: string;
-              duration: string;
-              search_txid: number;
-            }>;
+            prov_id: number;
+            fac_id: number;
+            date: string;
+            time: string;
+            duration: string;
+            search_txid: number;
           }>;
-        };
+        }>;
       };
+      const startDateOut = (response.start_date as string) ?? startDate;
+      const endDateOut = (response.end_date as string) ?? "";
+      const provApuId = provSlots?.apu_id;
 
-      const days = data.prov_slots.appt_slots
-        .filter((day) => day.appt_slots.length > 0)
+      const days = (provSlots?.appt_slots ?? [])
+        .filter((day) => day.appt_slots?.length > 0)
         .map((day) => ({
           date: day.appt_date,
           displayDate: format(parseISO(day.appt_date), "EEEE, MMMM d"),
@@ -85,7 +84,7 @@ export const getAvailableSlots = tool({
             searchTxid: slot.search_txid,
             provId: slot.prov_id,
             facId: slot.fac_id,
-            apuId: data.prov_slots.apu_id,
+            apuId: provApuId,
           })),
         }));
 
@@ -97,8 +96,8 @@ export const getAvailableSlots = tool({
         facilityName,
         visitReasonId,
         visitReasonName,
-        startDate: data.start_date,
-        endDate: data.end_date,
+        startDate: startDateOut,
+        endDate: endDateOut,
         days,
       };
     } catch (err) {

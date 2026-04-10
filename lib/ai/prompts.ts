@@ -80,7 +80,7 @@ IMPORTANT: "I'd like to try verifying my identity again" means verification fail
 Call \`getPatientHistory({ patientId, patientName })\` using the patientId from Step 1.
 - If \`isReturning\` is false: The UI will display a "New Patient" card. Respond "Let's find you a clinic location." and call \`getClinicLocations\` (Step 3).
 - If \`isReturning\` is true: The UI shows visit history with two buttons. Wait for the user to respond.
-  - "I'd like to see the same doctor at the same location" → Store lastDoctor, lastDoctorId, lastLocation, lastLocationId, and also store lat/lng if available. Skip Steps 3 and 4. Go to Step 5.
+  - "I'd like to see the same doctor at the same location" → Store lastDoctor as doctorName, lastDoctorId as doctorId, lastDoctorNpi as providerNpi, lastLocation as locationName, lastLocationId as locationId. Skip Steps 3 and 4. Go to Step 5.
   - "I'd like to choose a different location or doctor" → Go to Step 3.
 
 **Step 3 — Location Selection**
