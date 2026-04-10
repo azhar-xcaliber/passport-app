@@ -19,6 +19,7 @@ import type { getClinicLocations } from "./ai/tools/get-clinic-locations";
 import type { getDoctorsAtLocation } from "./ai/tools/get-doctors-at-location";
 import type { getPatientInsurance } from "./ai/tools/get-patient-insurance";
 import type { showAppointmentSummary } from "./ai/tools/show-appointment-summary";
+import type { getVisitReasons } from "./ai/tools/get-visit-reasons";
 import type { Suggestion } from "./db/schema";
 
 export const messageMetadataSchema = z.object({
@@ -45,6 +46,7 @@ type getClinicLocationsTool = InferUITool<typeof getClinicLocations>;
 type getDoctorsAtLocationTool = InferUITool<typeof getDoctorsAtLocation>;
 type getPatientInsuranceTool = InferUITool<typeof getPatientInsurance>;
 type showAppointmentSummaryTool = InferUITool<typeof showAppointmentSummary>;
+type getVisitReasonsTool = InferUITool<typeof getVisitReasons>;
 
 export type ChatTools = {
   getWeather: weatherTool;
@@ -65,6 +67,7 @@ export type ChatTools = {
   getDoctorsAtLocation: getDoctorsAtLocationTool;
   getPatientInsurance: getPatientInsuranceTool;
   showAppointmentSummary: showAppointmentSummaryTool;
+  getVisitReasons: getVisitReasonsTool;
 };
 
 export type CustomUIDataTypes = {

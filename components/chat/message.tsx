@@ -262,9 +262,20 @@ const PurePreviewMessage = ({
       const widthClass = "w-[min(100%,440px)]";
 
       if (state === "output-available") {
+        const output = part.output;
+        if ("error" in output) {
+          return (
+            <div className={widthClass} key={toolCallId}>
+              <Tool className="w-full">
+                <ToolHeader state="output-error" type="tool-getAvailableSlots" />
+                <ToolContent>{output.error}</ToolContent>
+              </Tool>
+            </div>
+          );
+        }
         return (
           <div className={widthClass} key={toolCallId}>
-            <AvailableTimeSlots data={part.output} />
+            <AvailableTimeSlots data={output} />
           </div>
         );
       }
