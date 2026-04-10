@@ -429,9 +429,19 @@ const PurePreviewMessage = ({
       const widthClass = "w-[min(100%,480px)]";
 
       if (state === "output-available") {
+        if (part.output && "error" in part.output) {
+          return (
+            <div
+              className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
+              key={toolCallId}
+            >
+              Error loading clinic locations: {String(part.output.error)}
+            </div>
+          );
+        }
         return (
           <div className={widthClass} key={toolCallId}>
-            <ClinicLocationSelector data={part.output} />
+            <ClinicLocationSelector data={part.output as never} />
           </div>
         );
       }
@@ -453,9 +463,19 @@ const PurePreviewMessage = ({
       const widthClass = "w-[min(100%,480px)]";
 
       if (state === "output-available") {
+        if (part.output && "error" in part.output) {
+          return (
+            <div
+              className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
+              key={toolCallId}
+            >
+              Error loading doctors: {String(part.output.error)}
+            </div>
+          );
+        }
         return (
           <div className={widthClass} key={toolCallId}>
-            <DoctorSelector data={part.output} />
+            <DoctorSelector data={part.output as never} />
           </div>
         );
       }

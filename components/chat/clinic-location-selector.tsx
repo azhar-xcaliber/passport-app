@@ -1,13 +1,15 @@
 "use client";
 
-import { MapPinIcon, PhoneIcon } from "lucide-react";
+import { ClockIcon, ExternalLinkIcon, MapPinIcon } from "lucide-react";
 import { useActiveChat } from "@/hooks/use-active-chat";
 
 type ClinicLocation = {
   id: string;
   name: string;
   address: string;
-  phone: string;
+  lat?: number;
+  lng?: number;
+  timezone?: string;
 };
 
 type ClinicLocationSelectorData = {
@@ -55,17 +57,33 @@ export function ClinicLocationSelector({ data }: { data: ClinicLocationSelectorD
               <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted/60 ring-1 ring-border/30">
                 <MapPinIcon className="text-muted-foreground" size={13} />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="font-medium text-foreground text-xs">
                   {location.name}
                 </div>
                 <div className="mt-0.5 flex items-center gap-1 text-muted-foreground/60 text-[11px]">
                   <MapPinIcon size={9} />
-                  {location.address}
+                  <span className="truncate">{location.address}</span>
                 </div>
-                <div className="mt-0.5 flex items-center gap-1 text-muted-foreground/50 text-[11px]">
-                  <PhoneIcon size={9} />
-                  {location.phone}
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                  {location.timezone && (
+                    <div className="flex items-center gap-1 text-muted-foreground/50 text-[11px]">
+                      <ClockIcon size={9} />
+                      {location.timezone.replace(/_/g, " ")}
+                    </div>
+                  )}
+                  {location.lat != null && location.lng != null && (
+                    <a
+                      className="flex items-center gap-1 text-primary/60 text-[11px] hover:text-primary transition-colors"
+                      href={`https://www.google.com/maps?q=${location.lat},${location.lng}`}
+                      onClick={(e) => e.stopPropagation()}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <ExternalLinkIcon size={9} />
+                      View on map
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
