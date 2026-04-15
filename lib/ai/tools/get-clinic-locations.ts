@@ -41,7 +41,7 @@ export const getClinicLocations = tool({
 
       const locations = facList.map((fac) => ({
         id: String(fac.fac_id),
-        name: fac.name,
+        name: fac.name.replace(/BE WELL\s*/i, "").trim(),
         address: [fac.address1, fac.address2, fac.city, fac.state, fac.zip]
           .filter(Boolean)
           .join(", "),

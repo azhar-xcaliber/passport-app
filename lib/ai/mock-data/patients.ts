@@ -42,7 +42,7 @@ export type MockPatient = {
   // Appointment booking fields
   isReturning: boolean;
   lastDoctor: string | null;
-  lastDoctorId: string | null;  // provider_enc_npi
+  lastDoctorId: string | null; // provider_enc_npi
   lastDoctorNpi: string | null; // provider_npi (used by Healow API)
   lastLocation: string | null;
   lastLocationId: string | null;
@@ -88,7 +88,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     lastDoctor: "Gerald Ray, DO",
     lastDoctorId: "gQdekM2bdXbOyVjp",
     lastDoctorNpi: "1720067119",
-    lastLocation: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+    lastLocation: "PRIMARY CARE MEDICINE ALLIANCE",
     lastLocationId: "210",
     insurance: {
       provider: "Blue Cross Blue Shield",
@@ -100,13 +100,13 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
       {
         date: "2026-02-10",
         doctor: "Gerald Ray, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+        location: "PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Annual Physical",
       },
       {
         date: "2025-11-05",
         doctor: "Gerald Ray, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+        location: "PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Blood Pressure Follow-up",
       },
     ],
@@ -138,7 +138,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     lastDoctor: "Radhika Vayani, DO",
     lastDoctorId: "MpLVyW9jjlxoGrd5",
     lastDoctorNpi: "1396068870",
-    lastLocation: "BE WELL PRIMARY CARE MEDICINE AZLE",
+    lastLocation: "PRIMARY CARE MEDICINE AZLE",
     lastLocationId: "224",
     insurance: {
       provider: "Aetna",
@@ -150,7 +150,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
       {
         date: "2026-01-15",
         doctor: "Radhika Vayani, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
+        location: "PRIMARY CARE MEDICINE AZLE",
         reason: "Cholesterol Follow-up",
       },
     ],
@@ -214,7 +214,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     lastDoctor: "Amy Mitchell, FNP",
     lastDoctorId: "aLe2GNe84mOY7zg6",
     lastDoctorNpi: "1407485345",
-    lastLocation: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+    lastLocation: "PRIMARY CARE MEDICINE ALLIANCE",
     lastLocationId: "210",
     insurance: {
       provider: "UnitedHealthcare",
@@ -226,13 +226,13 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
       {
         date: "2026-03-01",
         doctor: "Amy Mitchell, FNP",
-        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+        location: "PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Specialist Consultation",
       },
       {
         date: "2025-12-15",
         doctor: "Gerald Ray, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+        location: "PRIMARY CARE MEDICINE ALLIANCE",
         reason: "General Checkup",
       },
     ],
@@ -282,20 +282,20 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     lastDoctor: "Amy Mitchell, FNP",
     lastDoctorId: "aLe2GNe84mOY7zg6",
     lastDoctorNpi: "1407485345",
-    lastLocation: "BE WELL PRIMARY CARE MEDICINE DENTON",
+    lastLocation: "PRIMARY CARE MEDICINE DENTON",
     lastLocationId: "225",
     insurance: null,
     visitHistory: [
       {
         date: "2026-02-20",
         doctor: "Amy Mitchell, FNP",
-        location: "BE WELL PRIMARY CARE MEDICINE DENTON",
+        location: "PRIMARY CARE MEDICINE DENTON",
         reason: "Thyroid Follow-up",
       },
       {
         date: "2025-10-10",
         doctor: "Radhika Vayani, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
+        location: "PRIMARY CARE MEDICINE AZLE",
         reason: "Blood Pressure Management",
       },
     ],
@@ -364,7 +364,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     lastDoctor: "Gerald Ray, DO",
     lastDoctorId: "gQdekM2bdXbOyVjp",
     lastDoctorNpi: "1720067119",
-    lastLocation: "BE WELL PRIMARY CARE MEDICINE-KELLER",
+    lastLocation: "PRIMARY CARE MEDICINE-KELLER",
     lastLocationId: "227",
     insurance: {
       provider: "Anthem",
@@ -376,7 +376,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
       {
         date: "2026-01-20",
         doctor: "Gerald Ray, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE DENTON",
+        location: "PRIMARY CARE MEDICINE DENTON",
         reason: "Asthma Follow-up",
       },
     ],
@@ -426,7 +426,7 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
     lastDoctor: "Radhika Vayani, DO",
     lastDoctorId: "MpLVyW9jjlxoGrd5",
     lastDoctorNpi: "1396068870",
-    lastLocation: "BE WELL PRIMARY CARE MEDICINE AZLE",
+    lastLocation: "PRIMARY CARE MEDICINE AZLE",
     lastLocationId: "224",
     insurance: {
       provider: "Medicare",
@@ -438,19 +438,19 @@ export const MOCK_PATIENTS: Record<string, MockPatient> = {
       {
         date: "2026-02-01",
         doctor: "Radhika Vayani, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
+        location: "PRIMARY CARE MEDICINE AZLE",
         reason: "Diabetes Management",
       },
       {
         date: "2025-11-15",
         doctor: "Amy Mitchell, FNP",
-        location: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+        location: "PRIMARY CARE MEDICINE ALLIANCE",
         reason: "Hypertension Follow-up",
       },
       {
         date: "2025-08-20",
         doctor: "Radhika Vayani, DO",
-        location: "BE WELL PRIMARY CARE MEDICINE AZLE",
+        location: "PRIMARY CARE MEDICINE AZLE",
         reason: "Lab Review",
       },
     ],
@@ -551,7 +551,7 @@ export type ClinicLocation = {
 export const CLINIC_LOCATIONS: ClinicLocation[] = [
   {
     id: "210",
-    name: "BE WELL PRIMARY CARE MEDICINE ALLIANCE",
+    name: "PRIMARY CARE MEDICINE ALLIANCE",
     address: "3800 NORTH TARRANT PARKWAY, Suite 210, FORT WORTH, TX 76244",
     lat: 32.934_024,
     lng: -97.250_604,
@@ -559,7 +559,7 @@ export const CLINIC_LOCATIONS: ClinicLocation[] = [
   },
   {
     id: "224",
-    name: "BE WELL PRIMARY CARE MEDICINE AZLE",
+    name: "PRIMARY CARE MEDICINE AZLE",
     address: "721 SOUTHEAST PKWY, AZLE, TX 76020",
     lat: 32.91,
     lng: -97.557_24,
@@ -567,7 +567,7 @@ export const CLINIC_LOCATIONS: ClinicLocation[] = [
   },
   {
     id: "225",
-    name: "BE WELL PRIMARY CARE MEDICINE DENTON",
+    name: "PRIMARY CARE MEDICINE DENTON",
     address: "3200 COLORADO BLVD, STE 202, DENTON, TX 76210",
     lat: 33.145_623,
     lng: -97.090_468,
@@ -575,7 +575,7 @@ export const CLINIC_LOCATIONS: ClinicLocation[] = [
   },
   {
     id: "226",
-    name: "BE WELL PRIMARY CARE BRIDGEPORT",
+    name: "PRIMARY CARE BRIDGEPORT",
     address: "808 WOODROW WILSON RAY CIR, BRIDGEPORT, TX 76426",
     lat: 33.151_387,
     lng: -97.821_373,
@@ -583,7 +583,7 @@ export const CLINIC_LOCATIONS: ClinicLocation[] = [
   },
   {
     id: "227",
-    name: "BE WELL PRIMARY CARE MEDICINE-KELLER",
+    name: "PRIMARY CARE MEDICINE-KELLER",
     address: "601 S MAIN ST, STE 200, KELLER, TX 76248",
     lat: 32.930_266,
     lng: -97.247_254,
@@ -591,7 +591,7 @@ export const CLINIC_LOCATIONS: ClinicLocation[] = [
   },
   {
     id: "229",
-    name: "BE WELL PRIMARY CARE SAGINAW",
+    name: "PRIMARY CARE SAGINAW",
     address: "709 W BAILEY BOSWELL RD, FORT WORTH, TX 76179",
     lat: 32.9064,
     lng: -97.433_22,
@@ -666,6 +666,11 @@ export const DOCTORS_BY_LOCATION: Record<string, string[]> = {
   "224": ["gQdekM2bdXbOyVjp", "QYLry2ARO68zkn3b", "MpLVyW9jjlxoGrd5"], // Azle
   "225": ["aLe2GNe84mOY7zg6", "QYLry2ARO68zkn3b", "gQdekM2bdXbOyVjp"], // Denton
   "226": ["MpLVyW9jjlxoGrd5", "gQdekM2bdXbOyVjp", "QYLry2ARO68zkn3b"], // Bridgeport
-  "227": ["aLe2GNe84mOY7zg6", "gQdekM2bdXbOyVjp", "QYLry2ARO68zkn3b", "MpLVyW9jjlxoGrd5"], // Keller
+  "227": [
+    "aLe2GNe84mOY7zg6",
+    "gQdekM2bdXbOyVjp",
+    "QYLry2ARO68zkn3b",
+    "MpLVyW9jjlxoGrd5",
+  ], // Keller
   "229": ["aLe2GNe84mOY7zg6", "MpLVyW9jjlxoGrd5", "QYLry2ARO68zkn3b"], // Saginaw
 };
