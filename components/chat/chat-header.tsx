@@ -1,55 +1,59 @@
 "use client";
 
-import { PanelLeftIcon } from "lucide-react";
+import { PanelLeftIcon, SquarePenIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
-import { VercelIcon } from "./icons";
-import { VisibilitySelector, type VisibilityType } from "./visibility-selector";
+import type { VisibilityType } from "./visibility-selector";
 
 function PureChatHeader({
   chatId,
   selectedVisibilityType,
   isReadonly,
+  isEmbed,
 }: {
   chatId: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
+  isEmbed?: boolean;
 }) {
   const { state, toggleSidebar, isMobile } = useSidebar();
+  const router = useRouter();
 
-  if (state === "collapsed" && !isMobile) {
+  if (state === "collapsed" && !isMobile && !isEmbed) {
     return null;
   }
 
   return (
     <header className="sticky top-0 flex h-14 items-center gap-2 bg-sidebar px-3">
-      <Button
-        className="md:hidden"
-        onClick={toggleSidebar}
-        size="icon-sm"
-        variant="ghost"
-      >
-        <PanelLeftIcon className="size-4" />
-      </Button>
+      {isEmbed ? (
+        <Button
+          onClick={() => router.push("/embed")}
+          size="icon-sm"
+          title="New chat"
+          variant="ghost"
+        >
+          <SquarePenIcon className="size-4" />
+        </Button>
+      ) : (
+        <Button
+          className="md:hidden"
+          onClick={toggleSidebar}
+          size="icon-sm"
+          variant="ghost"
+        >
+          <PanelLeftIcon className="size-4" />
+        </Button>
+      )}
 
-      <Link
-        className="flex size-8 items-center justify-center rounded-lg md:hidden"
-        href="https://vercel.com/templates/next.js/chatbot"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <VercelIcon size={14} />
-      </Link>
-
-      {!isReadonly && (
+      {/* {!isReadonly && (
         <VisibilitySelector
           chatId={chatId}
           selectedVisibilityType={selectedVisibilityType}
         />
-      )}
+      )} */}
 
       <div className="hidden rounded-lg px-4 md:ml-auto md:flex">
         {/* <Link

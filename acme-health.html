@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acme Health Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,500;1,7..72,300;1,7..72,400&family=Nunito+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    >
+    <style></style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav id="navbar">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg
+            viewBox="0 0 18 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 2v14M2 9h14"
+              stroke="#C9A46A"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+        <div>
+          <span class="nav-logo-text">Acme Health</span>
+          <span class="nav-logo-sub">Practice</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#team">Our Team</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Book Appointment</a>
+      <div class="nav-hamburger" onclick="toggleMenu(this)">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-bg-pattern"></div>
+      <div class="hero-grid-lines"></div>
+
+      <div class="hero-left">
+        <div class="hero-eyebrow">Comprehensive Care</div>
+        <h1 class="hero-h1">
+          Your health,
+          <br>
+          <em>thoughtfully</em>
+          <br>
+          cared for.
+        </h1>
+        <p class="hero-desc">
+          Acme Health Practice brings together a team of dedicated physicians
+          and specialists committed to your long-term wellbeing — with care
+          that's personal, precise, and always patient-first.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">Book an Appointment</a>
+          <a href="#about" class="btn-ghost"
+            >Learn More <span class="btn-ghost-arrow">→</span></a
+          >
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">24<span>+</span></div>
+            <div class="hero-stat-label">Years of Care</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">12<span>k</span></div>
+            <div class="hero-stat-label">Patients Served</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">98<span>%</span></div>
+            <div class="hero-stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-card-stack">
+          <div class="hero-card-main">
+            <div class="hero-card-avatar-row">
+              <div class="hero-avatar">A</div>
+              <div>
+                <div class="hero-card-name">Dr. Amara Osei</div>
+                <div class="hero-card-title">Lead Physician</div>
+              </div>
+            </div>
+            <div class="hero-card-divider"></div>
+            <div>
+              <div class="hero-card-label">Next Available</div>
+              <div class="hero-card-value">Today, 2:30 PM</div>
+              <div class="hero-card-sub">In-person or Telehealth</div>
+            </div>
+            <div class="hero-card-divider"></div>
+            <div>
+              <div class="hero-card-label">Location</div>
+              <div class="hero-card-value">Acme Main Campus</div>
+              <div class="hero-card-sub">Suite 400, Level 4</div>
+            </div>
+          </div>
+          <div class="hero-card-badge">
+            <div class="hero-card-badge-num">4.9</div>
+            <div class="hero-card-badge-text">Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-hint">
+        <div class="hero-scroll-line"></div>
+        Scroll
+      </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item"
+          >Primary Care <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Specialist Referrals <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Preventive Health <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Telehealth <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Mental Wellness <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Chronic Care Management <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Pediatrics <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Women's Health <span class="ticker-dot"></span></span
+        >
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item"
+          >Primary Care <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Specialist Referrals <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Preventive Health <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Telehealth <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Mental Wellness <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Chronic Care Management <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Pediatrics <span class="ticker-dot"></span></span
+        >
+        <span class="ticker-item"
+          >Women's Health <span class="ticker-dot"></span></span
+        >
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="services-header reveal">
+        <div>
+          <div class="section-eyebrow">What We Offer</div>
+          <h2 class="section-h2">
+            Care designed
+            <br>
+            <em>for every stage</em>
+            <br>
+            of life.
+          </h2>
+        </div>
+        <p class="services-desc">
+          From annual wellness visits to complex specialist coordination, Acme
+          Health Practice delivers a full spectrum of medical services under one
+          roof — so your care is seamless, connected, and complete.
+        </p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 3v5l4 2.4-.72 1.2L9 11V5h1z"
+                fill="#1B3A2F"
+                opacity=".6"
+              />
+            </svg>
+          </div>
+          <div class="service-num">01</div>
+          <div class="service-title">Primary Care</div>
+          <p class="service-desc">
+            Your first point of contact for all health concerns. Our primary
+            care physicians provide ongoing, comprehensive care including annual
+            physicals, illness management, and health monitoring.
+          </p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M10 2L3 7v11h4v-6h6v6h4V7L10 2z"
+                fill="#1B3A2F"
+                opacity=".6"
+              />
+            </svg>
+          </div>
+          <div class="service-num">02</div>
+          <div class="service-title">Specialist Referrals</div>
+          <p class="service-desc">
+            When specialized expertise is needed, we coordinate seamlessly with
+            our trusted network of specialists — ensuring warm handoffs and
+            continuous communication throughout your care journey.
+          </p>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle
+                cx="10"
+                cy="10"
+                r="7"
+                stroke="#1B3A2F"
+                stroke-width="1.5"
+                stroke-opacity=".6"
+                fill="none"
+              />
+              <path
+                d="M7 10l2 2 4-4"
+                stroke="#1B3A2F"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                opacity=".6"
+              />
+            </svg>
+          </div>
+          <div class="service-num">03</div>
+          <div class="service-title">Preventive Care</div>
+          <p class="service-desc">
+            Proactive health means fewer surprises. We offer age-appropriate
+            screenings, immunizations, lifestyle counseling, and personalized
+            wellness plans to keep you ahead of potential health concerns.
+          </p>
+        </div>
+        <div class="service-card reveal reveal-delay-4">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect
+                x="3"
+                y="6"
+                width="14"
+                height="10"
+                rx="2"
+                stroke="#1B3A2F"
+                stroke-width="1.5"
+                stroke-opacity=".6"
+                fill="none"
+              />
+              <path
+                d="M7 6V5a3 3 0 016 0v1"
+                stroke="#1B3A2F"
+                stroke-width="1.5"
+                stroke-opacity=".6"
+                fill="none"
+              />
+            </svg>
+          </div>
+          <div class="service-num">04</div>
+          <div class="service-title">Telehealth</div>
+          <p class="service-desc">
+            Quality care from wherever you are. Our secure video consultations
+            connect you with your physician for follow-ups, medication reviews,
+            and non-urgent concerns — no commute required.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="about-visual reveal">
+        <div class="about-img-box">
+          <div class="about-img-inner">
+            <div class="about-img-overlay-text">Care</div>
+          </div>
+        </div>
+        <div class="about-badge">
+          <div class="about-badge-num">24<span>+</span></div>
+          <div class="about-badge-text">
+            Years serving
+            <br>
+            our community
+          </div>
+        </div>
+      </div>
+      <div class="about-content reveal reveal-delay-2">
+        <div class="section-eyebrow">Our Story</div>
+        <h2 class="section-h2">
+          Medicine with
+          <br>
+          <em>intention</em>
+          <br>
+          and integrity.
+        </h2>
+        <p class="about-body">
+          Founded in 2001, Acme Health Practice was built on a simple belief:
+          every patient deserves a physician who truly listens. Over two decades
+          later, that principle guides every appointment, every diagnosis, and
+          every care decision we make.
+        </p>
+        <div class="about-pillars">
+          <div class="about-pillar">
+            <div class="pillar-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm3.53 5.53l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L7 9.44l3.47-3.47a.75.75 0 011.06 1.06z"
+                  fill="#1B3A2F"
+                  opacity=".5"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="pillar-title">Patient-First Philosophy</div>
+              <p class="pillar-desc">
+                Every clinical decision starts with what matters most to you —
+                your goals, your values, your life.
+              </p>
+            </div>
+          </div>
+          <div class="about-pillar">
+            <div class="pillar-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 4a.75.75 0 10-1.5 0v4.5l2.75 1.65a.75.75 0 10.75-1.3L8.75 8.6V5z"
+                  fill="#1B3A2F"
+                  opacity=".5"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="pillar-title">Evidence-Based Medicine</div>
+              <p class="pillar-desc">
+                Our clinical protocols are grounded in the latest research and
+                continuously updated as science advances.
+              </p>
+            </div>
+          </div>
+          <div class="about-pillar">
+            <div class="pillar-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 2.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM1 8a7 7 0 1114 0A7 7 0 011 8zm7-3.5a.75.75 0 01.75.75v3.5l2.25 1.35a.75.75 0 01-.75 1.3l-2.63-1.58A.75.75 0 017.25 9V5.25A.75.75 0 018 4.5z"
+                  fill="#1B3A2F"
+                  opacity=".5"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="pillar-title">Community Partnership</div>
+              <p class="pillar-desc">
+                We are proud members of this community — participating in local
+                health initiatives and welcoming all patients.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team">
+      <div class="team-header reveal">
+        <div>
+          <div class="section-eyebrow" style="color: var(--gold);">
+            <span
+              style="background: var(--gold); display: inline-block; width: 24px; height: 1px; margin-right: .75rem;"
+            ></span>
+            Meet the Team
+          </div>
+          <h2 class="section-h2">
+            Physicians you
+            <br>
+            <em>can trust.</em>
+          </h2>
+        </div>
+        <p class="team-desc">
+          Our physicians bring decades of combined experience across multiple
+          specialties. Each is board-certified, deeply compassionate, and
+          committed to ongoing education.
+        </p>
+      </div>
+      <div class="team-grid">
+        <div class="doctor-card reveal reveal-delay-1">
+          <div class="doctor-avatar">A</div>
+          <div class="doctor-name">Dr. Amara Osei</div>
+          <div class="doctor-specialty">Lead Physician · Internal Medicine</div>
+          <p class="doctor-bio">
+            Board-certified in internal medicine with over 18 years of
+            experience. Dr. Osei specializes in complex chronic disease
+            management and preventive care.
+          </p>
+          <div class="doctor-divider"></div>
+          <div class="doctor-meta">MD, Johns Hopkins · 18 yrs experience</div>
+        </div>
+        <div class="doctor-card reveal reveal-delay-2">
+          <div class="doctor-avatar">R</div>
+          <div class="doctor-name">Dr. Rachel Torres</div>
+          <div class="doctor-specialty">Family Medicine</div>
+          <p class="doctor-bio">
+            With a focus on whole-family health, Dr. Torres cares for patients
+            from infancy through adulthood, building lasting relationships
+            across generations.
+          </p>
+          <div class="doctor-divider"></div>
+          <div class="doctor-meta">MD, Stanford · 12 yrs experience</div>
+        </div>
+        <div class="doctor-card reveal reveal-delay-3">
+          <div class="doctor-avatar">M</div>
+          <div class="doctor-name">Dr. Michael Chen</div>
+          <div class="doctor-specialty">Cardiology</div>
+          <p class="doctor-bio">
+            Specialist in cardiovascular health and preventive cardiology. Dr.
+            Chen works closely with primary care to identify and reduce cardiac
+            risk early.
+          </p>
+          <div class="doctor-divider"></div>
+          <div class="doctor-meta">MD, UCSF · 15 yrs experience</div>
+        </div>
+        <div class="doctor-card reveal reveal-delay-4">
+          <div class="doctor-avatar">S</div>
+          <div class="doctor-name">Dr. Sana Malik</div>
+          <div class="doctor-specialty">Women's Health</div>
+          <p class="doctor-bio">
+            Dr. Malik provides comprehensive care tailored to women at every
+            life stage, from reproductive health to menopause and beyond.
+          </p>
+          <div class="doctor-divider"></div>
+          <div class="doctor-meta">MD, Yale · 10 yrs experience</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-info reveal">
+        <div class="section-eyebrow">Get In Touch</div>
+        <h2 class="section-h2">
+          Start your
+          <br>
+          <em>care journey</em>
+          <br>
+          today.
+        </h2>
+        <p class="contact-body">
+          Whether you're establishing care for the first time or managing an
+          ongoing condition, our team is here to help. Book an appointment
+          online or reach us directly.
+        </p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M9 1.5C6.24 1.5 4 3.74 4 6.5c0 3.75 5 10 5 10s5-6.25 5-10c0-2.76-2.24-5-5-5zm0 6.75a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z"
+                  fill="#1B3A2F"
+                  opacity=".5"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Address</div>
+              <div class="contact-value">1200 Wellness Blvd, Suite 400</div>
+              <div class="contact-subvalue">Springfield, CA 94105</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M14.5 11.3c-.8-.8-1.7-1.3-2.5-1.3-.7 0-1.4.3-2 .9l-1.1 1.1c-1.8-1-3.4-2.6-4.4-4.4L5.6 6.5c.6-.6.9-1.3.9-2 0-.8-.5-1.7-1.3-2.5C4.4 1.2 3.5.75 2.7.75c-.7 0-1.4.3-1.9.9L.2 2.25C-.3 2.85-.5 3.6-.3 4.4c1.2 5 5.9 9.7 10.9 10.9.8.2 1.6 0 2.2-.5l.6-.6c.6-.5.9-1.2.9-1.9 0-.8-.4-1.7-1.8-3z"
+                  fill="#1B3A2F"
+                  opacity=".5"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">(555) 800-ACME</div>
+              <div class="contact-subvalue">Mon–Fri 8am–6pm · Sat 9am–1pm</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M15 3H3a1.5 1.5 0 00-1.5 1.5v9A1.5 1.5 0 003 15h12a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0015 3zm0 3l-6 3.75L3 6V4.5l6 3.75L15 4.5V6z"
+                  fill="#1B3A2F"
+                  opacity=".5"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">hello@acmehealth.com</div>
+              <div class="contact-subvalue">For non-urgent inquiries only</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal reveal-delay-2">
+        <div class="form-title">Book an Appointment</div>
+        <p class="form-sub">
+          We'll confirm your appointment within one business day.
+        </p>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" placeholder="Jane" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" placeholder="Smith" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="jane@email.com"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="(555) 000-0000">
+          </div>
+          <div class="form-group">
+            <label for="service">Service</label>
+            <select id="service">
+              <option value="">Select a service…</option>
+              <option>Primary Care Visit</option>
+              <option>Annual Physical</option>
+              <option>Specialist Referral</option>
+              <option>Telehealth Consultation</option>
+              <option>Women's Health</option>
+              <option>Cardiology</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Notes (optional)</label>
+            <textarea
+              id="message"
+              placeholder="Any additional details about your visit…"
+            ></textarea>
+          </div>
+          <button type="submit" class="form-submit">
+            Request Appointment →
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- MAP STRIP -->
+    <div class="map-strip">
+      <div class="map-grid"></div>
+      <div class="map-overlay">
+        <div class="map-content">
+          <div class="map-pin">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path
+                d="M11 2C7.69 2 5 4.69 5 8c0 4.5 6 12 6 12s6-7.5 6-12c0-3.31-2.69-6-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z"
+                fill="#1B3A2F"
+              />
+            </svg>
+          </div>
+          <div class="map-address">1200 Wellness Blvd, Suite 400</div>
+          <div class="map-city">Springfield, California 94105</div>
+          <a href="#" class="map-btn">Get Directions →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" style="text-decoration:none;">
+            <div class="nav-logo-mark">
+              <svg viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M9 2v14M2 9h14"
+                  stroke="#C9A46A"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <span class="nav-logo-text">Acme Health</span>
+              <span class="nav-logo-sub">Practice</span>
+            </div>
+          </a>
+          <p class="footer-tagline">
+            Compassionate, evidence-based care for every stage of life — serving
+            the Springfield community since 2001.
+          </p>
+        </div>
+        <div>
+          <div class="footer-col-title">Services</div>
+          <ul class="footer-links">
+            <li><a href="#services">Primary Care</a></li>
+            <li><a href="#services">Specialist Referrals</a></li>
+            <li><a href="#services">Preventive Care</a></li>
+            <li><a href="#services">Telehealth</a></li>
+            <li><a href="#services">Women's Health</a></li>
+            <li><a href="#services">Cardiology</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Practice</div>
+          <ul class="footer-links">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#team">Our Physicians</a></li>
+            <li><a href="#contact">Appointments</a></li>
+            <li><a href="#">Patient Portal</a></li>
+            <li><a href="#">Insurance & Billing</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Patient Resources</div>
+          <ul class="footer-links">
+            <li><a href="#">New Patients</a></li>
+            <li><a href="#">Forms & Documents</a></li>
+            <li><a href="#">Referral Process</a></li>
+            <li><a href="#">After-Hours Care</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          © 2026 Acme Health Practice. All rights reserved.
+        </div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">HIPAA Notice</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Passport chatbot Widget -->
+    <script src="http://localhost:3000/embed.js" defer></script>
+
+    <script></script>
+  </body>
+</html>

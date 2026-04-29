@@ -27,7 +27,7 @@ import { submitEditedMessage } from "./message-editor";
 import { Messages } from "./messages";
 import { MultimodalInput } from "./multimodal-input";
 
-export function ChatShell() {
+export function ChatShell({ isEmbed }: { isEmbed?: boolean } = {}) {
   const {
     chatId,
     messages,
@@ -81,6 +81,7 @@ export function ChatShell() {
         >
           <ChatHeader
             chatId={chatId}
+            isEmbed={isEmbed}
             isReadonly={isReadonly}
             selectedVisibilityType={visibilityType}
           />

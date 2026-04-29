@@ -53,6 +53,17 @@ const nextConfig: NextConfig = {
     inlineCss: true,
     turbopackFileSystemCacheForDev: true,
   },
+  async headers() {
+    return [
+      {
+        source: "/embed",
+        headers: [
+          { key: "X-Frame-Options", value: "" },
+          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+        ],
+      },
+    ];
+  },
 };
 
 export default withBotId(nextConfig);
