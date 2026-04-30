@@ -37,6 +37,11 @@ export const {
   signOut,
 } = NextAuth({
   ...authConfig,
+  cookies: {
+    sessionToken: {
+      options: { httpOnly: true, sameSite: "none", path: "/", secure: true },
+    },
+  },
   providers: [
     Credentials({
       credentials: {

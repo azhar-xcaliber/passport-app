@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
+import { auth } from "@/app/(auth)/auth";
 import { DataStreamProvider } from "@/components/chat/data-stream-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ActiveChatProvider } from "@/hooks/use-active-chat";
@@ -29,11 +31,22 @@ export default function EmbedLayout({
         <DataStreamProvider>
           <ChatContextProvider>
             <Suspense fallback={<div className="flex h-dvh bg-sidebar" />}>
-              <ActiveChatProvider>{children}</ActiveChatProvider>
+              <AuthGuard>{children}</AuthGuard>
             </Suspense>
           </ChatContextProvider>
         </DataStreamProvider>
       </SidebarProvider>
     </div>
   );
+}
+
+async function AuthGuard({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
+  if (!session?.user) {
+    const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+    redirect(`${base}/api/auth/guest?redirectUrl=${encodeURIComponent(`${base}/embed`)}`);
+  }
+
+  return <ActiveChatProvider>{children}</ActiveChatProvider>;
 }
