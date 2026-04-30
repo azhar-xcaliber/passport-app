@@ -67,5 +67,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-// botid is Vercel-specific infrastructure; skip it outside Vercel to avoid redirect loops
-export default process.env.VERCEL ? withBotId(nextConfig) : nextConfig;
+export default withBotId(nextConfig);
