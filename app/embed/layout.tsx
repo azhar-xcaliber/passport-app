@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
+import { auth } from "@/app/(auth)/auth";
 import { DataStreamProvider } from "@/components/chat/data-stream-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ActiveChatProvider } from "@/hooks/use-active-chat";
@@ -10,11 +12,18 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function EmbedLayout({
+export default async function EmbedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
+  if (!session?.user) {
+    const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+    redirect(`${base}/api/auth/guest?redirectUrl=${base}/embed`);
+  }
+
   return (
     <div className="flex h-dvh w-full flex-col overflow-hidden">
       <Toaster
