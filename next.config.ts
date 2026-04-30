@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const basePath = process.env.IS_DEMO === "1" ? "/demo" : "";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   ...(basePath
     ? {
         basePath,
@@ -66,4 +67,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withBotId(nextConfig);
+// botid is Vercel-specific infrastructure; skip it outside Vercel to avoid redirect loops
+export default process.env.VERCEL ? withBotId(nextConfig) : nextConfig;
