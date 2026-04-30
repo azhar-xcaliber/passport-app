@@ -1,0 +1,38 @@
+# Source control
+.git
+.gitignore
+
+# Dependencies (reinstalled inside Docker)
+node_modules
+
+# Build output (rebuilt inside Docker)
+.next
+out
+build
+
+# Environment files — never bake secrets into the image
+.env
+.env.local
+.env*.local
+.env.docker
+
+# Dev/test artifacts
+playwright-report
+test-results
+blob-report
+coverage
+
+# Editor and OS
+.DS_Store
+*.pem
+.vscode
+.idea
+
+# Turbo and TypeScript caches
+.turbo
+tsconfig.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
