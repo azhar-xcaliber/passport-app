@@ -32,7 +32,7 @@
     "  transform:scale(1.08);" +
     "  box-shadow:0 8px 24px -4px oklch(0.3 0.01 260/0.18);" +
     "}" +
-    "#acme-chat-btn svg{pointer-events:none;display:block;}" +
+    "#acme-chat-btn svg,#acme-chat-btn img{pointer-events:none;display:block;}" +
 
     "#acme-chat-panel{" +
     "  position:absolute;bottom:68px;right:0;" +
@@ -76,11 +76,9 @@
     "}";
   document.head.appendChild(style);
 
-  // Lucide-style MessageSquare icon (matches the app's icon set)
   const ICON_CHAT =
-    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' +
-    "</svg>";
+    '<img src="' + origin + '/XC%20Logo%20Vector.png" alt="XC" ' +
+    'style="width:34px;height:34px;object-fit:contain;display:block;pointer-events:none;" />';
 
   const ICON_CLOSE =
     '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
