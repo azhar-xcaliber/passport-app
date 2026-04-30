@@ -45,7 +45,7 @@ async function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (!session?.user) {
     const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-    redirect(`${base}/api/auth/guest?redirectUrl=${base}/embed`);
+    redirect(`${base}/api/auth/guest?redirectUrl=${encodeURIComponent(`${base}/embed`)}`);
   }
 
   return <ActiveChatProvider>{children}</ActiveChatProvider>;
