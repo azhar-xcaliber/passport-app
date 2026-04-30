@@ -12,18 +12,11 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function EmbedLayout({
+export default function EmbedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  if (!session?.user) {
-    const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-    redirect(`${base}/api/auth/guest?redirectUrl=${base}/embed`);
-  }
-
   return (
     <div className="flex h-dvh w-full flex-col overflow-hidden">
       <Toaster
@@ -38,11 +31,22 @@ export default async function EmbedLayout({
         <DataStreamProvider>
           <ChatContextProvider>
             <Suspense fallback={<div className="flex h-dvh bg-sidebar" />}>
-              <ActiveChatProvider>{children}</ActiveChatProvider>
+              <AuthGuard>{children}</AuthGuard>
             </Suspense>
           </ChatContextProvider>
         </DataStreamProvider>
       </SidebarProvider>
     </div>
   );
+}
+
+async function AuthGuard({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
+  if (!session?.user) {
+    const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+    redirect(`${base}/api/auth/guest?redirectUrl=${base}/embed`);
+  }
+
+  return <ActiveChatProvider>{children}</ActiveChatProvider>;
 }
