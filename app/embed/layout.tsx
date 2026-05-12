@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
@@ -6,6 +7,8 @@ import { DataStreamProvider } from "@/components/chat/data-stream-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ActiveChatProvider } from "@/hooks/use-active-chat";
 import { ChatContextProvider } from "@/hooks/use-chat-context";
+import { PracticeProvider } from "@/hooks/use-practice-context";
+import { getPracticeByOrigin } from "@/lib/ai/mock-data/practices";
 
 export const metadata = {
   title: "Acme Health Assistant",
@@ -27,26 +30,38 @@ export default function EmbedLayout({
             "!bg-card !text-foreground !border-border/50 !shadow-[var(--shadow-float)]",
         }}
       />
-      <SidebarProvider defaultOpen={false}>
-        <DataStreamProvider>
-          <ChatContextProvider>
-            <Suspense fallback={<div className="flex h-dvh bg-sidebar" />}>
-              <AuthGuard>{children}</AuthGuard>
-            </Suspense>
-          </ChatContextProvider>
-        </DataStreamProvider>
-      </SidebarProvider>
+      <Suspense fallback={<div className="flex-1 bg-sidebar" />}>
+        <PracticeShell>{children}</PracticeShell>
+      </Suspense>
     </div>
   );
 }
 
-async function AuthGuard({ children }: { children: React.ReactNode }) {
+async function PracticeShell({ children }: { children: React.ReactNode }) {
   const session = await auth();
+
+  const headerStore = await headers();
+  const embedOrigin = headerStore.get("x-embed-origin") ?? "";
 
   if (!session?.user) {
     const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-    redirect(`${base}/api/auth/guest?redirectUrl=${encodeURIComponent(`${base}/embed`)}`);
+    const embedUrl = embedOrigin
+      ? `/embed?embed_origin=${encodeURIComponent(embedOrigin)}`
+      : "/embed";
+    redirect(`${base}/api/auth/guest?redirectUrl=${encodeURIComponent(`${base}${embedUrl}`)}`);
   }
 
-  return <ActiveChatProvider>{children}</ActiveChatProvider>;
+  const practiceConfig = embedOrigin ? getPracticeByOrigin(embedOrigin) : null;
+
+  return (
+    <PracticeProvider value={practiceConfig}>
+      <SidebarProvider defaultOpen={false}>
+        <DataStreamProvider>
+          <ChatContextProvider>
+            <ActiveChatProvider>{children}</ActiveChatProvider>
+          </ChatContextProvider>
+        </DataStreamProvider>
+      </SidebarProvider>
+    </PracticeProvider>
+  );
 }

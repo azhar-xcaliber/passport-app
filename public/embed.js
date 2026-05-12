@@ -11,6 +11,10 @@
   var scriptSrc = scriptEl ? scriptEl.src : "";
   var origin = scriptSrc ? new URL(scriptSrc).origin : "http://localhost:3000";
   var embedUrl = origin + "/embed";
+  var embedOrigin = window.location.origin || "";
+  var iframeSrc = embedOrigin
+    ? embedUrl + "?embed_origin=" + encodeURIComponent(embedOrigin)
+    : embedUrl;
 
   // App design tokens (from globals.css)
   // Light: --primary oklch(0.37 0.08 260), --primary-foreground oklch(0.98 0 0)
@@ -90,7 +94,7 @@
   widget.id = "acme-chat-widget";
   widget.innerHTML =
     '<div id="acme-chat-panel">' +
-    '  <iframe src="' + embedUrl + '" title="Acme Health Chat" allow="clipboard-write"></iframe>' +
+    '  <iframe src="' + iframeSrc + '" title="Acme Health Chat" allow="clipboard-write"></iframe>' +
     "</div>" +
     '<button id="acme-chat-btn" aria-label="Open health assistant chat" aria-expanded="false">' +
     ICON_CHAT +
