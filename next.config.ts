@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const basePath = process.env.IS_DEMO === "1" ? "/demo" : "";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   ...(basePath
     ? {
         basePath,
@@ -58,7 +59,6 @@ const nextConfig: NextConfig = {
       {
         source: "/embed",
         headers: [
-          { key: "X-Frame-Options", value: "" },
           { key: "Content-Security-Policy", value: "frame-ancestors *" },
         ],
       },

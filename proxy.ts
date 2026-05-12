@@ -5,6 +5,17 @@ import { guestRegex, isDevelopmentEnvironment } from "./lib/constants";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Embed routes: inject embed_origin as a request header so layout server component can read it
+  if (pathname === "/embed" || pathname.startsWith("/embed/")) {
+    const embedOrigin = request.nextUrl.searchParams.get("embed_origin");
+    if (embedOrigin) {
+      const requestHeaders = new Headers(request.headers);
+      requestHeaders.set("x-embed-origin", embedOrigin);
+      return NextResponse.next({ request: { headers: requestHeaders } });
+    }
+    return NextResponse.next();
+  }
+
   if (pathname.startsWith("/ping")) {
     return new Response("pong", { status: 200 });
   }
@@ -40,12 +51,14 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/embed",
+    "/embed/:path*",
     "/",
     "/chat/:id",
     "/api/:path*",
     "/login",
     "/register",
 
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|embed\\.js|embed).*)",
   ],
 };
