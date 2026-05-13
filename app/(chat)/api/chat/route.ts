@@ -13,6 +13,7 @@ import { after } from "next/server";
 import { createResumableStreamContext } from "resumable-stream";
 import { auth, type UserType } from "@/app/(auth)/auth";
 import { entitlementsByUserType } from "@/lib/ai/entitlements";
+import { getPracticeByOrigin } from "@/lib/ai/mock-data/practices";
 import {
   allowedModelIds,
   chatModels,
@@ -83,7 +84,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { id, message, messages, selectedChatModel, selectedVisibilityType } =
+    const { id, message, messages, selectedChatModel, selectedVisibilityType, embedOrigin } =
       requestBody;
 
     const [, session] = await Promise.all([
@@ -180,6 +181,8 @@ export async function POST(request: Request) {
       country,
     };
 
+    const practiceConfig = embedOrigin ? getPracticeByOrigin(embedOrigin) : null;
+
     if (message?.role === "user") {
       await saveMessages({
         messages: [
@@ -245,7 +248,7 @@ export async function POST(request: Request) {
       execute: async ({ writer: dataStream }) => {
         const result = streamText({
           model: litellm.chat(chatModel),
-          system: systemPrompt({ requestHints, supportsTools }),
+          system: systemPrompt({ requestHints, supportsTools, practiceConfig }),
           messages: modelMessages,
           stopWhen: stepCountIs(5),
           experimental_activeTools:

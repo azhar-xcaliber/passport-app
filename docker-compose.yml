@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: chatbot_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chatbot
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d chatbot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: chatbot_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatbot_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    environment:
+      # Override service URLs to use Docker internal hostnames
+      POSTGRES_URL: postgresql://postgres:postgres@postgres:5432/chatbot
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: production
+      # Tell NextAuth the app is on HTTP so it uses plain (non-__Secure-) cookies.
+      # Without this, session cookies are rejected by the browser over HTTP and
+      # every request looks unauthenticated, causing a guest-redirect loop.
+      AUTH_URL: http://localhost:3000
+
+volumes:
+  postgres_data:
+  redis_data:

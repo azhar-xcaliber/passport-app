@@ -1,5 +1,6 @@
 import type { Geo } from "@vercel/functions";
 import type { ArtifactKind } from "@/components/chat/artifact";
+import type { PracticeConfig } from "@/lib/ai/mock-data/practices";
 
 export const artifactsPrompt = `
 Artifacts is a side panel that displays content alongside the conversation. It supports scripts (code), documents (text), and spreadsheets. Changes appear in real-time.
@@ -200,20 +201,43 @@ Once all required fields are gathered, call \`submitRefillRequest\` with the com
 - Never invent medication names, dosages, or Rx numbers — only use data from the image or user input.
 `;
 
+export const getPracticePrompt = (practice: PracticeConfig | null): string => {
+  if (!practice) { return ""; }
+  return `About the practice this assistant is embedded on:
+- Practice name: ${practice.name}
+- Contact phone: ${practice.phone}
+
+Always refer to this practice as "${practice.name}". When asked for contact information, provide ${practice.phone}.`;
+};
+
 export const systemPrompt = ({
   requestHints,
   supportsTools,
+  practiceConfig = null,
 }: {
   requestHints: RequestHints;
   supportsTools: boolean;
+  practiceConfig?: PracticeConfig | null;
 }) => {
   const requestPrompt = getRequestPromptFromHints(requestHints);
+  const practicePrompt = getPracticePrompt(practiceConfig);
 
   if (!supportsTools) {
-    return `${regularPrompt}\n\n${requestPrompt}`;
+    return [regularPrompt, requestPrompt, practicePrompt]
+      .filter(Boolean)
+      .join("\n\n");
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}\n\n${appointmentBookingPrompt}\n\n${medicationRefillPrompt}`;
+  return [
+    regularPrompt,
+    requestPrompt,
+    practicePrompt,
+    artifactsPrompt,
+    appointmentBookingPrompt,
+    medicationRefillPrompt,
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 };
 
 export const codePrompt = `

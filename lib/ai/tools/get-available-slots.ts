@@ -1,7 +1,6 @@
 import { tool } from "ai";
 import { format, parseISO } from "date-fns";
 import { z } from "zod";
-import { healowPost } from "@/lib/ai/healow/client";
 
 function formatTime(time: string): string {
   const [h, m] = time.split(":").map(Number);
@@ -9,6 +8,8 @@ function formatTime(time: string): string {
   const hour = h % 12 || 12;
   return `${hour}:${String(m).padStart(2, "0")} ${ampm}`;
 }
+
+const STATIC_SLOT = { npi: 0, apu_id: 311_299, enc_id: 0, prov_id: 142_857, fac_id: 210, date: "", time: "", duration: "30", visit_type: "MEDICARE", tz_code: "", cancellation: 0, open_model: 1, open_vt_rule: "1", search_txid: 575_579_646, linked_slots: [] as never[] };
 
 export const getAvailableSlots = tool({
   description:
@@ -25,7 +26,7 @@ export const getAvailableSlots = tool({
       .string()
       .describe("Start date in yyyy-MM-dd format, defaults to today"),
   }),
-  execute: async ({
+  execute: ({
     patientId,
     providerNpi,
     providerName,
@@ -36,43 +37,67 @@ export const getAvailableSlots = tool({
     startDate,
   }) => {
     try {
-      const envApuId = process.env.HEALOW_APU_ID ?? "311299";
-      const response = await healowPost("GetProviderSlotsAtFacility", {
-        oa_source: "3",
-        provider_npi: providerNpi,
-        apu_id: envApuId,
-        facility_id: facilityId,
-        start_date: startDate,
-        time_pref: "anytime",
-        is_pt_existing: "1",
-        practice_visit_reason_id: String(visitReasonId),
-        days: "7",
-        user_timezone_name: "America/Los_Angeles",
-        package_questionnaire_answer: "",
-      });
-
-      const provSlots = response.prov_slots as {
-        provider_npi: number;
-        apu_id: number;
-        facility_id: number;
-        appt_slots?: Array<{
-          appt_date: string;
-          appt_slots: Array<{
-            prov_id: number;
-            fac_id: number;
-            date: string;
-            time: string;
-            duration: string;
-            search_txid: number;
-          }>;
-        }>;
+      const response = {
+        end_date: "2026-05-28",
+        prov_slots: {
+          provider_npi: 1_093_678_211,
+          apu_id: 311_299,
+          facility_id: 210,
+          appt_slots: [
+            {
+              appt_date: "2026-05-22",
+              appt_slots: [
+                { ...STATIC_SLOT, date: "2026-05-22", time: "13:30:00" },
+                { ...STATIC_SLOT, date: "2026-05-22", time: "14:00:00" },
+                { ...STATIC_SLOT, date: "2026-05-22", time: "14:30:00" },
+              ],
+            },
+            { appt_date: "2026-05-23", appt_slots: [] as typeof STATIC_SLOT[] },
+            { appt_date: "2026-05-24", appt_slots: [] as typeof STATIC_SLOT[] },
+            {
+              appt_date: "2026-05-25",
+              appt_slots: [
+                { ...STATIC_SLOT, date: "2026-05-25", time: "08:00:00" },
+                { ...STATIC_SLOT, date: "2026-05-25", time: "08:30:00" },
+                { ...STATIC_SLOT, date: "2026-05-25", time: "09:00:00" },
+              ],
+            },
+            {
+              appt_date: "2026-05-26",
+              appt_slots: [
+                { ...STATIC_SLOT, date: "2026-05-26", time: "08:30:00" },
+                { ...STATIC_SLOT, date: "2026-05-26", time: "13:30:00" },
+                { ...STATIC_SLOT, date: "2026-05-26", time: "14:00:00" },
+              ],
+            },
+            {
+              appt_date: "2026-05-27",
+              appt_slots: [
+                { ...STATIC_SLOT, date: "2026-05-27", time: "08:30:00" },
+                { ...STATIC_SLOT, date: "2026-05-27", time: "09:00:00" },
+                { ...STATIC_SLOT, date: "2026-05-27", time: "10:30:00" },
+              ],
+            },
+            {
+              appt_date: "2026-05-28",
+              appt_slots: [
+                { ...STATIC_SLOT, date: "2026-05-28", time: "08:00:00" },
+                { ...STATIC_SLOT, date: "2026-05-28", time: "08:30:00" },
+                { ...STATIC_SLOT, date: "2026-05-28", time: "09:30:00" },
+              ],
+            },
+          ],
+        },
+        start_date: "2026-05-22",
       };
-      const startDateOut = (response.start_date as string) ?? startDate;
-      const endDateOut = (response.end_date as string) ?? "";
-      const provApuId = provSlots?.apu_id;
 
-      const days = (provSlots?.appt_slots ?? [])
-        .filter((day) => day.appt_slots?.length > 0)
+      const provSlots = response.prov_slots;
+      const startDateOut = response.start_date ?? startDate;
+      const endDateOut = response.end_date ?? "";
+      const provApuId = provSlots.apu_id;
+
+      const days = provSlots.appt_slots
+        .filter((day) => day.appt_slots.length > 0)
         .map((day) => ({
           date: day.appt_date,
           displayDate: format(parseISO(day.appt_date), "EEEE, MMMM d"),
